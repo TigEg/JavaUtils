@@ -9,8 +9,8 @@ import org.apache.commons.beanutils.ConvertUtilsBean;
  */
 public class ConvertUtilsBeanExt extends ConvertUtilsBean {
 
-    protected static ConvertUtilsBean getInstance() {
-        return BeanUtilsBeanExt.getInstance().getConvertUtils();
-    }
+  protected static ConvertUtilsBean getInstance() {
+    return BeanUtilsBeanExt.getInstance().getConvertUtils();
+  }
 
 }

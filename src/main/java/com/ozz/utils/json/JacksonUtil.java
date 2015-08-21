@@ -18,17 +18,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JacksonUtil {
 
-	public String toJson(Object bean) throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		return objectMapper.writeValueAsString(bean);
-	}
+  public String toJson(Object bean) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    return objectMapper.writeValueAsString(bean);
+  }
 
-	public <T> T formJson(String json, Class<T> c) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		T bean = objectMapper.readValue(json, c);
-		return bean;
-	}
+  public <T> T formJson(String json, Class<T> c) throws JsonParseException, JsonMappingException, IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    T bean = objectMapper.readValue(json, c);
+    return bean;
+  }
 
 }

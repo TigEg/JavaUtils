@@ -153,8 +153,13 @@ public class ExcelUtil {
   }
 
   private static String getCellInfo(Cell cell) {
-    return "sheet: " + cell.getSheet().getSheetName() + ", 行: " + (cell.getRowIndex() + 1) + ", 列:" + NumberFormatUtil.formatEnglish(cell.getColumnIndex() + 1)
-        + ", 值:" + cell.getNumericCellValue();
+    return "sheet: " + cell.getSheet().getSheetName()
+           + ", 行: "
+           + (cell.getRowIndex() + 1)
+           + ", 列:"
+           + NumberFormatUtil.formatEnglish(cell.getColumnIndex() + 1)
+           + ", 值:"
+           + cell.getNumericCellValue();
   }
 
   public static void removeRow(Sheet sheet, int rowIndex) {
