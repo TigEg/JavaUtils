@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public abstract class NumberFormatUtil {
 
-  private static final Pattern PATTERN = Pattern.compile("^[A-Za-z]+$");
+  private static final Pattern PATTERN = Pattern.compile("[A-Za-z]+");
 
   public static String formatEnglish(int num) {
     if (num <= 0)
@@ -33,7 +33,7 @@ public abstract class NumberFormatUtil {
   }
 
   public static int parseEnglish(String en) {
-    if (en == null || !PATTERN.matcher(en).find()) {
+    if (en == null || !PATTERN.matcher(en).matches()) {
       throw new RuntimeException("字母:'" + en + "'非法");
     }
 
