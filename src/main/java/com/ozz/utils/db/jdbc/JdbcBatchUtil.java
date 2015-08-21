@@ -10,16 +10,16 @@ import com.ozz.utils.db.jdbc.base.JdbcSqlserverBatchUtil;
 
 public abstract class JdbcBatchUtil {
 
-    public static JdbcBatchUtil getOracleInstance() {
-        return new JdbcOracleBatchUtil();
-    }
+  public static JdbcBatchUtil getOracleInstance() {
+    return new JdbcOracleBatchUtil();
+  }
 
-    public static JdbcBatchUtil getSqlserverInstance() {
-        return new JdbcSqlserverBatchUtil();
-    }
+  public static JdbcBatchUtil getSqlserverInstance() {
+    return new JdbcSqlserverBatchUtil();
+  }
 
-    public abstract Map<String, ColumnInfo> queryColumnInfo(Connection conn, String tableName) throws SQLException;
+  public abstract Map<String, ColumnInfo> queryColumnInfo(Connection conn, String tableName) throws SQLException;
 
-    public abstract void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException;
+  public abstract void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException;
 
 }
