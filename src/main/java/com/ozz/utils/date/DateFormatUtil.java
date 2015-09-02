@@ -16,7 +16,7 @@ public class DateFormatUtil {
     public static String PATTERN_DATE = "yyyy-MM-dd";
     public static String PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
-    public static String[] PATTERNS = new String[] { PATTERN_YEAR, PATTERN_DATE, PATTERN_DATETIME, "yyyy-MM-dd HH:mm:ss.SSS" };
+    public static String[] PATTERNS = new String[] { "yyyy", "yyyy-MM-dd", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SSS" };
 
     public static String format(Date date, String pattern) {
         if (date == null) {
