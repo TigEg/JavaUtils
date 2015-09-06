@@ -21,7 +21,7 @@ dependencies {
     compile("commons-beanutils:commons-beanutils:+")
     compile("org.apache.poi:poi-ooxml:+")
     compile("com.fasterxml.jackson.core:jackson-databind:+")
-    compile("commons-lang:commons-lang:+")
+    compile("org.apache.commons:commons-lang3:+")
     compile("commons-io:commons-io:+")
     compile("org.apache.ant:ant:+")
     compile("ch.qos.logback:logback-classic:+")
