@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  *
  */
-public class JacksonUtil {
+public class JsonUtil {
 
   public String toJson(Object bean) throws JsonProcessingException {
     ObjectMapper objectMapper = new ObjectMapper();
