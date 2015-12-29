@@ -37,5 +37,4 @@ public class ExcelCellStyleUtil {
   public static void createFreezeTopRow(Sheet sheet) {
     sheet.createFreezePane(0, 1);
   }
-
 }
