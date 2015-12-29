@@ -106,11 +106,8 @@ public class FileUtil {
         } else {
           count++;
           String md5 = DigestUtils.md5Hex(new FileInputStream(file));
-          LoggerFactory.getLogger(FileUtil.class).info("scan " + count
-                                                       + " "
-                                                       + DateFormatUtil.getTimeStringByMillis(System.currentTimeMillis() - startTime)
-                                                       + " "
-                                                       + file.getPath());
+          LoggerFactory.getLogger(FileUtil.class)
+                       .info("scan " + count + " " + DateFormatUtil.getTimeStringByMillis(System.currentTimeMillis() - startTime) + " " + file.getPath());
           if (!mapOfMd5.containsKey(md5)) {
             mapOfMd5.put(md5, new ArrayList<String>());
           }
@@ -120,11 +117,12 @@ public class FileUtil {
     }
 
     long costTime = System.currentTimeMillis() - startTime;
-    LoggerFactory.getLogger(FileUtil.class).info("scan End! count: " + count
-                                                 + ", cost time: "
-                                                 + DateFormatUtil.getTimeStringByMillis(costTime)
-                                                 + ", average: "
-                                                 + DateFormatUtil.getTimeStringByMillis(costTime / count));
+    LoggerFactory.getLogger(FileUtil.class)
+                 .info("scan End! count: " + count
+                       + ", cost time: "
+                       + DateFormatUtil.getTimeStringByMillis(costTime)
+                       + ", average: "
+                       + DateFormatUtil.getTimeStringByMillis(costTime / count));
 
     /*
      * output result
@@ -150,5 +148,4 @@ public class FileUtil {
     String md5_2 = DigestUtils.md5Hex(new FileInputStream(file2));
     return StringUtils.equals(md5_1, md5_2);
   }
-
 }
