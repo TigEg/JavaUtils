@@ -1,8 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-tasks.withType(Compile) {
-    options.encoding = "UTF-8"  
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
 }
 
 sourceCompatibility = 1.8
