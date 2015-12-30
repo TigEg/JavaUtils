@@ -49,14 +49,10 @@ public class ExcelUtil {
   }
 
   public static void write(Workbook workbook, File file) {
-    OutputStream out = null;
-    try {
-      out = new FileOutputStream(file);
+    try (OutputStream out = new FileOutputStream(file)) {
       workbook.write(out);
     } catch (IOException e) {
       throw new RuntimeException(e);
-    } finally {
-      IOUtils.closeQuietly(out);
     }
   }
 
