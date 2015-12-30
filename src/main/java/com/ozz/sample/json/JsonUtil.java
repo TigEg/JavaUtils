@@ -1,10 +1,9 @@
-package com.ozz.utils.json;
+package com.ozz.sample.json;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import com.fasterxml.jackson.core.JsonParseException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -18,17 +17,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JsonUtil {
 
-  public String toJson(Object bean) throws JsonProcessingException {
+  public String toJson(Object bean) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    return objectMapper.writeValueAsString(bean);
+    try {
+      return objectMapper.writeValueAsString(bean);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  public <T> T formJson(String json, Class<T> c) throws JsonParseException, JsonMappingException, IOException {
+  public <T> T formJson(String json, Class<T> c) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    T bean = objectMapper.readValue(json, c);
-    return bean;
+    T bean;
+    try {
+      bean = objectMapper.readValue(json, c);
+      return bean;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }
