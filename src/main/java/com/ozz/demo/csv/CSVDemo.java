@@ -23,7 +23,7 @@ public class CSVDemo {
 
   public void readCsv() throws FileNotFoundException, IOException {
     final String FILE_NAME = ResourcePathUtil.getProjectPath() + "/logs/student.csv";
-    final String[] FILE_HEADER = {"ID", "Name"};
+    final String[] FILE_HEADER = {"Id", "Name"};
 
     // 显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
     CSVFormat format = CSVFormat.DEFAULT.withHeader(FILE_HEADER).withSkipHeaderRecord();
@@ -34,7 +34,7 @@ public class CSVDemo {
       String strID;
       String strName;
       for (CSVRecord record : records) {
-        strID = record.get("ID");
+        strID = record.get("Id");
         strName = record.get("Name");
         System.out.println(strID + " " + strName);
       }
@@ -43,7 +43,7 @@ public class CSVDemo {
 
   public void writeCsv() throws IOException {
     final String FILE_NAME = ResourcePathUtil.getProjectPath() + "/logs/student.csv";
-    final String[] FILE_HEADER = {"ID", "Name"};
+    final String[] FILE_HEADER = {"Id", "Name"};
     String[][] students = new String[][] {{"001", "谭振宇"}, {"002", "周杰伦"}};
 
     // 显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
