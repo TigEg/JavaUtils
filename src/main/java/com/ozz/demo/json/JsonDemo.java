@@ -1,4 +1,4 @@
-package com.ozz.sample.json;
+package com.ozz.demo.json;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  *
  */
-public class JsonUtil {
+public class JsonDemo {
 
   public String toJson(Object bean) {
     ObjectMapper objectMapper = new ObjectMapper();
