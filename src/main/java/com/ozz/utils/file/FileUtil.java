@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.ozz.utils.date.DateFormatUtil;
 
 public class FileUtil {
-  
   public static final String DEFAULT_ENCODING = StandardCharsets.UTF_8.name();
 
   public static final String readFileToString(File file) {
