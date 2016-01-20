@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import com.ozz.utils.date.DateFormatUtil;
 
 public class FileUtil {
 
-  public static final String DEFAULT_ENCODING = "UTF-8";// StandardCharsets.UTF_8.name();
+  public static final String DEFAULT_ENCODING = StandardCharsets.UTF_8.name();
 
   public static final String readFileToString(File file) {
     try {
