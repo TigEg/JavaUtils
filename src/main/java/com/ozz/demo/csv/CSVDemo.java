@@ -46,7 +46,7 @@ public class CSVDemo {
     final String[] FILE_HEADER = {"Id", "Name"};
     String[][] students = new String[][] {{"001", "谭振宇"}, {"002", "周杰伦"}};
 
-    // 显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
+    // 显式地配置CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
     CSVFormat format = CSVFormat.EXCEL.withHeader(FILE_HEADER).withSkipHeaderRecord();
 
     // 写入CSV的代码
