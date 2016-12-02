@@ -78,13 +78,13 @@ public class DateFormatUtil {
   public static String getStatisticsMess(long startTime, int currentNum, int totalNum) {
     int passedNum = currentNum - 1;
     long costTime = System.currentTimeMillis() - startTime;
-    StringBuilder mess = new StringBuilder("count: ").append(currentNum).append(", cost time: ").append(getTimeStringByMillis(costTime));
+    StringBuilder mess = new StringBuilder(String.valueOf(currentNum)).append(" of ").append(totalNum).append(", cost ").append(getTimeStringByMillis(costTime));
     if (passedNum <= 0) {
       return mess.toString();
     }
 
     if (totalNum >= currentNum) {
-      mess.append(" of ").append(totalNum).append(", left ").append(getTimeStringByMillis((totalNum - passedNum) * (costTime / passedNum)));
+      mess.append(", left ").append(getTimeStringByMillis((totalNum - passedNum) * (costTime / passedNum)));
     }
     return mess.toString();
   }
