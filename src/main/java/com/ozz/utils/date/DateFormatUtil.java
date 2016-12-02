@@ -76,26 +76,15 @@ public class DateFormatUtil {
   }
 
   public static String getStatisticsMess(long startTime, int currentNum, int totalNum) {
-    return getStatisticsMess(startTime, currentNum, totalNum, -1);
-  }
-
-  public static String getStatisticsMessAverage(long startTime, int currentNum, int averageCardinality) {
-    return getStatisticsMess(startTime, currentNum, -1, averageCardinality);
-  }
-
-  private static String getStatisticsMess(long startTime, int currentNum, int totalNum, int averageCardinality) {
     int passedNum = currentNum - 1;
     long costTime = System.currentTimeMillis() - startTime;
-    StringBuilder mess = new StringBuilder("cost time: ").append(getTimeStringByMillis(costTime)).append(", count: ").append(currentNum);
+    StringBuilder mess = new StringBuilder("count: ").append(currentNum).append(", cost time: ").append(getTimeStringByMillis(costTime));
     if (passedNum <= 0) {
       return mess.toString();
     }
 
     if (totalNum >= currentNum) {
-      mess.append(" of ").append(totalNum).append(", leaves ").append(getTimeStringByMillis((totalNum - passedNum) * (costTime / passedNum)));
-    }
-    if (averageCardinality > 0) {
-      mess.append(", average ").append(getTimeStringByMillis(costTime * averageCardinality / passedNum)).append(" per ").append(averageCardinality);
+      mess.append(" of ").append(totalNum).append(", left ").append(getTimeStringByMillis((totalNum - passedNum) * (costTime / passedNum)));
     }
     return mess.toString();
   }
