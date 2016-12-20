@@ -24,7 +24,7 @@ repositories {
 dependencies {
     compile("org.springframework:spring-beans:4.2.4.RELEASE")
     compile("org.apache.poi:poi-ooxml:3.13")
-    compile("com.fasterxml.jackson.core:jackson-databind:2.7.0")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.8.5")
     compile("org.apache.commons:commons-lang3:3.4")
     compile("commons-io:commons-io:2.4")
     compile("org.apache.ant:ant:1.9.6")//ZipUtil
