@@ -2,14 +2,16 @@ package com.ozz.demo.json;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import com.fasterxml.jackson.core.JsonGenerator;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 使用jackson框架实现json、对象转化
  * 
- * 注解忽略不可识别的属性注解 @JsonIgnoreProperties(ignoreUnknown = true) 注解忽略空值 @JsonInclude(Include.NON_NULL)
+ * 注解忽略不可识别的属性注解 @JsonIgnoreProperties(ignoreUnknown = true)
+ * 
+ * 注解忽略空值 @JsonInclude(Include.NON_NULL)
  * 
  * @author ouzezh
  *
@@ -20,7 +22,6 @@ public class JsonDemo {
   private ObjectMapper getObjectMapper() {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));// 日期格式
-    objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);// 序列化BigDecimal时之间输出原始数字还是科学计数，默认false
     return objectMapper;
   }
 
