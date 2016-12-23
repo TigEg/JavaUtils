@@ -29,11 +29,16 @@ public class HttpclientDemo {
   public static String doGet(String uri) throws IOException {
     try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
       HttpGet http = new HttpGet(uri);
-      try (CloseableHttpResponse response2 = httpclient.execute(http);) {
-        HttpEntity entity = response2.getEntity();
-        String responseStr = EntityUtils.toString(entity);
-        EntityUtils.consume(entity);
-        return responseStr;
+      try (CloseableHttpResponse response = httpclient.execute(http);) {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+          HttpEntity entity = response.getEntity();
+          String responseStr = EntityUtils.toString(entity);
+          EntityUtils.consume(entity);
+          return responseStr;
+        } else {
+          throw new RuntimeException(response.getStatusLine().getStatusCode() + ":"
+                                     + response.getStatusLine().getReasonPhrase());
+        }
       }
     }
   }
@@ -50,10 +55,15 @@ public class HttpclientDemo {
       }
       httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
       try (CloseableHttpResponse response = httpclient.execute(httpPost);) {
-        HttpEntity entity = response.getEntity();
-        String responseStr = EntityUtils.toString(entity);
-        EntityUtils.consume(entity);
-        return responseStr;
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+          HttpEntity entity = response.getEntity();
+          String responseStr = EntityUtils.toString(entity);
+          EntityUtils.consume(entity);
+          return responseStr;
+        } else {
+          throw new RuntimeException(response.getStatusLine().getStatusCode() + ":"
+                                     + response.getStatusLine().getReasonPhrase());
+        }
       }
     }
   }
@@ -78,13 +88,7 @@ public class HttpclientDemo {
       HttpResponse response = httpclient.execute(httppost);
 
       // 解析响应值
-      int statusCode = response.getStatusLine().getStatusCode();
-      if (statusCode == HttpStatus.SC_OK) {
-        System.out.println("服务器正常响应.....");
-        HttpEntity resEntity = response.getEntity();
-        System.out.println(EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
-        System.out.println(resEntity.getContent());
-        EntityUtils.consume(resEntity);
+      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
       } else {
         throw new RuntimeException(response.getStatusLine().getStatusCode() + ":"
                                    + response.getStatusLine().getReasonPhrase());
