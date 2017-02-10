@@ -26,7 +26,7 @@ public class HttpclientDemo {
   /**
    * Get
    */
-  public static String doGet(String uri) throws IOException {
+  public String doGet(String uri) throws IOException {
     try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
       HttpGet http = new HttpGet(uri);
       try (CloseableHttpResponse response = httpclient.execute(http);) {
@@ -96,7 +96,7 @@ public class HttpclientDemo {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public void main(String[] args) throws IOException {
     try {
       new HttpclientDemo().upload("http://jwapi.dev.staff.xdf.cn:8080/import_excel?accessToken=5e83a0b0-d9a8-44c2-b2de-1158b8866ccc&appId=90101&businessType=2",
                                   new File("C:/Users/ouzezhou/Desktop/Temp/20161223/班级模板 (7).xlsx"));

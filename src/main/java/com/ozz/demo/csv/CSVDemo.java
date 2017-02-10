@@ -17,16 +17,18 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import com.ozz.utils.resource.ResourcePathUtil;
+import com.ozz.demo.resource.ResourcePathUtil;
 
 public class CSVDemo {
-  public static void main(String[] args) throws FileNotFoundException, IOException {
+  private ResourcePathUtil resourcePathUtil;
+  
+  public void main(String[] args) throws FileNotFoundException, IOException {
     new CSVDemo().writeCsv();
     new CSVDemo().readCsv();
   }
 
   public void readCsv() throws FileNotFoundException, IOException {
-    final String FILE_NAME = ResourcePathUtil.getProjectPath() + "/logs/student.csv";
+    final String FILE_NAME = resourcePathUtil.getProjectPath() + "/logs/student.csv";
     final String[] FILE_HEADER = {"Id", "Name"};
 
     // 显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
@@ -46,7 +48,7 @@ public class CSVDemo {
   }
 
   public void writeCsv() throws IOException {
-    Path path = Paths.get(ResourcePathUtil.getProjectPath() + "/logs", "student.csv");
+    Path path = Paths.get(resourcePathUtil.getProjectPath() + "/logs", "student.csv");
     String[] header = {"Id", "Name"};
     String[][] students = new String[][] {{"001", "谭振宇"}, {"002", "周杰伦"}};
 
