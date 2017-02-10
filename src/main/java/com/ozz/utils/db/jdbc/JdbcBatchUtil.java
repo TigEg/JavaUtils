@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
+import com.ozz.utils.db.jdbc.base.ColumnInfo;
 import com.ozz.utils.db.jdbc.base.JdbcOracleBatchUtil;
 import com.ozz.utils.db.jdbc.base.JdbcSqlserverBatchUtil;
 

@@ -19,11 +19,10 @@ import org.slf4j.LoggerFactory;
 import com.ozz.utils.date.DateFormatUtil;
 
 public class FileUtil {
-  public static final String DEFAULT_ENCODING = StandardCharsets.UTF_8.name();
 
   public static final String readFileToString(File file) {
     try {
-      return FileUtils.readFileToString(file, DEFAULT_ENCODING);
+      return FileUtils.readFileToString(file, StandardCharsets.UTF_8.name());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -31,7 +30,7 @@ public class FileUtil {
 
   public static final List<String> readLines(File file) {
     try {
-      return FileUtils.readLines(file, DEFAULT_ENCODING);
+      return FileUtils.readLines(file, StandardCharsets.UTF_8.name());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -39,7 +38,7 @@ public class FileUtil {
 
   public static final void writeStringToFile(File file, String data) {
     try {
-      FileUtils.writeStringToFile(file, data, DEFAULT_ENCODING);
+      FileUtils.writeStringToFile(file, data, StandardCharsets.UTF_8.name());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

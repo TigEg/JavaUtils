@@ -1,13 +1,15 @@
 package com.ozz.demo.csv;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class CSVDemo {
     final String[] FILE_HEADER = {"Id", "Name"};
 
     // 显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
-    CSVFormat format = CSVFormat.DEFAULT.withHeader(FILE_HEADER).withSkipHeaderRecord();
+    CSVFormat format = CSVFormat.EXCEL.withHeader(FILE_HEADER).withSkipHeaderRecord();
 
     // 读出数据的代码
     try (Reader in = new InputStreamReader(new FileInputStream(FILE_NAME), "gbk")) {
@@ -44,15 +46,16 @@ public class CSVDemo {
   }
 
   public void writeCsv() throws IOException {
-    final String FILE_NAME = ResourcePathUtil.getProjectPath() + "/logs/student.csv";
-    final String[] FILE_HEADER = {"Id", "Name"};
+    Path path = Paths.get(ResourcePathUtil.getProjectPath() + "/logs", "student.csv");
+    String[] header = {"Id", "Name"};
     String[][] students = new String[][] {{"001", "谭振宇"}, {"002", "周杰伦"}};
 
     // 显式地配置CSV文件的Header
-    CSVFormat format = CSVFormat.EXCEL.withHeader(FILE_HEADER);
+    CSVFormat format = CSVFormat.EXCEL.withHeader(header);
     
-    try (Writer out = new OutputStreamWriter(new FileOutputStream(FILE_NAME), "gbk");
-        CSVPrinter printer = new CSVPrinter(out, format)) {
+    Files.deleteIfExists(path);
+    Files.createFile(path);
+    try (BufferedWriter out = Files.newBufferedWriter(path, Charset.forName("gbk")); CSVPrinter printer = new CSVPrinter(out, format)) {
       // 第一行
       String[] student = students[0];
       printer.print(student[0]);

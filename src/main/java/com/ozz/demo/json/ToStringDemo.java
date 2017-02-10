@@ -1,9 +1,8 @@
-package com.ozz.demo.tostring;
+package com.ozz.demo.json;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ozz.demo.json.JsonDemo;
 
 /**
  * Provides some convenient method implementations. Other object can extend it to leverage these

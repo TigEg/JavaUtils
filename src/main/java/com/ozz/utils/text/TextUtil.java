@@ -9,7 +9,7 @@ public class TextUtil {
    * @param input String.
    * @return 全角字符串.
    */
-  public static String toCh(String input) {
+  public static String toHalfwidth(String input) {
     if (StringUtils.isEmpty(input))
       return input;
 
@@ -30,7 +30,7 @@ public class TextUtil {
    * @param input String.
    * @return 半角字符串
    */
-  public static String toEn(String input) {
+  public static String toFullwidth(String input) {
     if (StringUtils.isEmpty(input))
       return input;
 
