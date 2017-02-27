@@ -1,4 +1,4 @@
-package com.ozz.demo.file;
+package com.ozz.demo.path;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ozz.demo.date.DateFormatUtil;
 
-public class FileDemo {
+public class PathDemo {
   public Path getPath(String path) {
     return Paths.get(path);
   }
@@ -107,7 +107,7 @@ public class FileDemo {
           try (InputStream in = Files.newInputStream(path)) {
             count++;
             String md5 = DigestUtils.md5Hex(in);
-            LoggerFactory.getLogger(FileDemo.class).info("scan " + count
+            LoggerFactory.getLogger(PathDemo.class).info("scan " + count
                                                          + " "
                                                          + dateFormatUtil.getTimeStringByMillis(System.currentTimeMillis()
                                                                                                 - startTime)
@@ -137,14 +137,14 @@ public class FileDemo {
         }
       }
     }
-    LoggerFactory.getLogger(FileDemo.class).info(sb.append("\n\nRepeat Files end").toString());
+    LoggerFactory.getLogger(PathDemo.class).info(sb.append("\n\nRepeat Files end").toString());
 
     System.out.println("--End--");
     return res;
   }
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new FileDemo().findRepeatFileInFolder("C:/Users/ouzezhou/Desktop/Temp");
+    new PathDemo().findRepeatFileInFolder("C:/Users/ouzezhou/Desktop/Temp");
   }
   
   public boolean equals(Path file1, Path file2) throws FileNotFoundException, IOException {

@@ -1,4 +1,4 @@
-package com.ozz.demo.resource;
+package com.ozz.demo.path;
 
 import java.net.URL;
 

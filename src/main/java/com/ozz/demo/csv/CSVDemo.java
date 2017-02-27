@@ -17,7 +17,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import com.ozz.demo.resource.ResourcePathUtil;
+import com.ozz.demo.path.ResourcePathUtil;
 
 public class CSVDemo {
   private ResourcePathUtil resourcePathUtil;

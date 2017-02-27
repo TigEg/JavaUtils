@@ -14,6 +14,9 @@ public class XmlDemo {
     new XmlDemo().getNode();
   }
   
+  /**
+   * 获取节点
+   */
   public void getNode() throws FileNotFoundException, XPathExpressionException {
     XPathFactory xpfactory = XPathFactory.newInstance();
     XPath path = xpfactory.newXPath();
@@ -29,4 +32,6 @@ public class XmlDemo {
     Node node = (Node)path.evaluate("/html/body", new InputSource(XmlDemo.class.getResourceAsStream("test.xml")), XPathConstants.NODE);
     System.out.println(node.getTextContent());
   }
+  
+  
 }
