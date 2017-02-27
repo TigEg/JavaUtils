@@ -13,6 +13,8 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,10 +75,10 @@ public class PathDemo {
 
   public List<List<String>> findRepeatFileInFolder(String folderPath)
       throws FileNotFoundException, IOException {
-    return findRepeatFileInFolder(new String[] {folderPath});
+    return findRepeatFileInFolder(Collections.singleton(folderPath));
   }
 
-  public List<List<String>> findRepeatFileInFolder(String[] folderPaths)
+  public List<List<String>> findRepeatFileInFolder(Collection<String> folderPaths)
       throws FileNotFoundException, IOException {
     /*
      * valid
