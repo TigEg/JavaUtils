@@ -19,11 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
-
 import com.ozz.demo.date.DateFormatUtil;
 
 public class PathDemo {
@@ -106,20 +104,13 @@ public class PathDemo {
         @Override
         public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 //          System.out.println(path.toString());
-          try (InputStream in = Files.newInputStream(path)) {
-            count++;
-            String md5 = DigestUtils.md5Hex(in);
-            LoggerFactory.getLogger(PathDemo.class).info("scan " + count
-                                                         + " "
-                                                         + dateFormatUtil.getTimeStringByMillis(System.currentTimeMillis()
-                                                                                                - startTime)
-                                                         + " "
-                                                         + path.toString());
-            if (!mapOfMd5.containsKey(md5)) {
-              mapOfMd5.put(md5, new ArrayList<String>());
-            }
-            mapOfMd5.get(md5).add(path.toString());
+          count++;
+          String md5 = digest(path);
+          LoggerFactory.getLogger(PathDemo.class).info("scan "+count+" "+dateFormatUtil.getTimeStringByMillis(System.currentTimeMillis()-startTime)+" "+ path.toString());
+          if (!mapOfMd5.containsKey(md5)) {
+            mapOfMd5.put(md5, new ArrayList<String>());
           }
+          mapOfMd5.get(md5).add(path.toString());
           return FileVisitResult.CONTINUE;
         }
       });
@@ -149,12 +140,14 @@ public class PathDemo {
     new PathDemo().findRepeatFileInFolder("C:/Users/ouzezhou/Desktop/Temp");
   }
   
-  public boolean equals(Path file1, Path file2) throws FileNotFoundException, IOException {
-    try (InputStream in1 = Files.newInputStream(file1);
-        InputStream in2 = Files.newInputStream(file2)) {
-      String md5_1 = DigestUtils.md5Hex(in1);
-      String md5_2 = DigestUtils.md5Hex(in2);
-      return StringUtils.equals(md5_1, md5_2);
+  public boolean equals(Path path1, Path path2) throws FileNotFoundException, IOException {
+      return StringUtils.equals(digest(path1), digest(path2));
+  }
+  
+  public String digest(Path path) throws IOException {
+    try(InputStream input = Files.newInputStream(path)) {
+      return DigestUtils.md5Hex(input);
+//      return DigestUtils.sha1Hex(input);;
     }
   }
 }
