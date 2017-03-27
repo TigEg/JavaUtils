@@ -2,7 +2,6 @@ package com.ozz.demo.path;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -19,12 +18,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.apache.commons.codec.digest.DigestUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
+
 import com.ozz.demo.date.DateFormatUtil;
+import com.ozz.demo.encrypt.DigestDemo;
 
 public class PathDemo {
+  private DigestDemo digestDemo;
+
   public Path getPath(String path) {
     return Paths.get(path);
   }
@@ -105,12 +108,12 @@ public class PathDemo {
         public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 //          System.out.println(path.toString());
           count++;
-          String md5 = digest(path);
+          String digest = digestDemo.digest(path);
           LoggerFactory.getLogger(PathDemo.class).info("scan "+count+" "+dateFormatUtil.getTimeStringByMillis(System.currentTimeMillis()-startTime)+" "+ path.toString());
-          if (!mapOfMd5.containsKey(md5)) {
-            mapOfMd5.put(md5, new ArrayList<String>());
+          if (!mapOfMd5.containsKey(digest)) {
+            mapOfMd5.put(digest, new ArrayList<String>());
           }
-          mapOfMd5.get(md5).add(path.toString());
+          mapOfMd5.get(digest).add(path.toString());
           return FileVisitResult.CONTINUE;
         }
       });
@@ -141,13 +144,7 @@ public class PathDemo {
   }
   
   public boolean equals(Path path1, Path path2) throws FileNotFoundException, IOException {
-      return StringUtils.equals(digest(path1), digest(path2));
+      return StringUtils.equals(digestDemo.digest(path1), digestDemo.digest(path2));
   }
   
-  public String digest(Path path) throws IOException {
-    try(InputStream input = Files.newInputStream(path)) {
-      return DigestUtils.md5Hex(input);
-//      return DigestUtils.sha1Hex(input);;
-    }
-  }
 }
