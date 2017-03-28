@@ -3,7 +3,7 @@
 <configuration scan="false" scanPeriod="1800 seconds"
 	debug="false">
 	<property name="USER_HOME" value="logs" />
-	<property scope="context" name="FILE_NAME" value="utils-logback" />
+	<property scope="context" name="FILE_NAME" value="logback" />
 	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
