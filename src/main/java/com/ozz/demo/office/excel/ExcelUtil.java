@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,15 +28,11 @@ public class ExcelUtil {
   private DateFormatUtil dateFormatUtil;
   private NumberFormatUtil numberFormatUtil;
 
-  public Workbook open(File file) {
-    FileInputStream input = null;
-    try {
-      input = new FileInputStream(file);
+  public Workbook open(File file) throws IOException {
+    try(FileInputStream input = new FileInputStream(file);) {
       return open(input);
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
-    } finally {
-      IOUtils.closeQuietly(input);
     }
   }
 
