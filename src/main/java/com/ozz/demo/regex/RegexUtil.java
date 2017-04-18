@@ -21,7 +21,9 @@ public class RegexUtil {
   private final Pattern PATTERN_DATA_FULL = Pattern.compile("^(" + REGEX_YMD + ") (2[0-3]|[0-1]\\d):[0-5]\\d:[0-5]\\d$");
   private final Pattern PATTERN_VARIABLE = Pattern.compile("^[A-Za-z][A-Za-z_0-9]*$");
 
-  private RegexUtil() {}
+  public void replaceWithCapturingGroup() {
+    System.out.println("a<b>c".replaceFirst("<(.*)>", "$1"));
+  }
 
   public boolean isValidDateYMD(String date) {
     return regexFind(PATTERN_DATA_YMD, date);
