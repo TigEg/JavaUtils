@@ -21,7 +21,7 @@ public class ResourcePathUtil {
     if (url == null) {
       throw new RuntimeException("未找到路径: " + path);
     } else {
-      return url.getPath().replaceFirst("^/", "").replaceFirst("/$", "");
+      return url.getPath().replaceFirst("^/([A-Z]+:)", "$1").replaceFirst("/$", "");
     }
   }
 
