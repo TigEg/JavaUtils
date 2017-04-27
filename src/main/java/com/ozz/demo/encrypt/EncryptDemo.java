@@ -59,11 +59,11 @@ public class EncryptDemo { // 密钥算法
   /**
    * 加密数据
    * 
-   * @param data 待加密数据
    * @param key 密钥
+   * @param data 待加密数据
    * @return 加密后的数据
    */
-  public String encrypt(String data, String key) throws Exception {
+  public String encrypt(String key, String data) throws Exception {
     Key k = toKey(Base64.decodeBase64(key)); // 还原密钥
     // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
     // Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
@@ -75,11 +75,11 @@ public class EncryptDemo { // 密钥算法
   /**
    * 解密数据
    * 
-   * @param data 待解密数据
    * @param key 密钥
+   * @param data 待解密数据
    * @return 解密后的数据
    */
-  public String decrypt(String data, String key) throws Exception {
+  public String decrypt(String key, String data) throws Exception {
     Key k = toKey(Base64.decodeBase64(key));
     Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
     cipher.init(Cipher.DECRYPT_MODE, k); // 初始化Cipher对象，设置为解密模式
@@ -95,10 +95,14 @@ public class EncryptDemo { // 密钥算法
     String key = demo.initkey();
     System.out.println("密钥：" + key);
 
-    String encryptData = demo.encrypt(source, key);
+    String encryptData = demo.encrypt(key, source);
     System.out.println("加密：" + encryptData);
 
-    String decryptData = demo.decrypt(encryptData, key);
+    String decryptData = demo.decrypt(key, encryptData);
     System.out.println("解密: " + decryptData);
+
+    if (!source.equals(decryptData)) {
+      throw new RuntimeException("解密失败...");
+    }
   }
 }
