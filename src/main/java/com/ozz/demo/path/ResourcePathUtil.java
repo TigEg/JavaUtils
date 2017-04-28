@@ -17,7 +17,7 @@ public class ResourcePathUtil {
     if (!path.startsWith("/")) {
       throw new RuntimeException("必须以'/'开头");
     }
-    URL url = ResourcePathUtil.class.getResource(path);
+    URL url = getClass().getResource(path);
     if (url == null) {
       throw new RuntimeException("未找到路径: " + path);
     } else {
