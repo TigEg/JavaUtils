@@ -57,7 +57,7 @@ public class NetworkInterfaceDemo {
     while (nis.hasMoreElements()) {
       NetworkInterface ni = nis.nextElement();
       Enumeration<InetAddress> ias = ni.getInetAddresses();
-      for (; ias.hasMoreElements();) {
+      while (ias.hasMoreElements()) {
         InetAddress ia = ias.nextElement();
         if (ia instanceof Inet4Address && !ia.getHostAddress().equals("127.0.0.1")) {
           // System.out.println("ipv4: "+ia.getHostAddress());
