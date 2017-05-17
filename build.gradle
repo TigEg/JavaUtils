@@ -23,16 +23,16 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework:spring-beans:4.2.4.RELEASE")
-    compile("org.apache.poi:poi-ooxml:3.15")
-    compile("com.fasterxml.jackson.core:jackson-databind:2.8.5")
-    compile("org.apache.commons:commons-lang3:3.4")
-    compile("commons-io:commons-io:2.4")
-    compile("org.apache.ant:ant:1.9.6")//ZipUtil
-    compile("ch.qos.logback:logback-classic:1.1.3")
-    compile("org.apache.commons:commons-csv:1.4")
-    compile("org.apache.httpcomponents:httpmime:4.4.1")
-    compile("org.jasypt:jasypt:1.9.2")
+    compile("org.springframework:spring-beans:+")
+    compile("org.apache.poi:poi-ooxml:+")
+    compile("com.fasterxml.jackson.core:jackson-databind:+")
+    compile("org.apache.commons:commons-lang3:+")
+    compile("commons-io:commons-io:+")
+    compile("org.apache.ant:ant:+")//ZipUtil
+    compile("ch.qos.logback:logback-classic:+")
+    compile("org.apache.commons:commons-csv:+")
+    compile("org.apache.httpcomponents:httpmime:+")
+    compile("org.jasypt:jasypt:+")
     //providedCompile
-    testCompile("junit:junit:4.12")
+    testCompile("junit:junit:+")
 }
