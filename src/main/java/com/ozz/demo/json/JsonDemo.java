@@ -3,7 +3,9 @@ package com.ozz.demo.json;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -25,22 +27,12 @@ public class JsonDemo {
     return objectMapper;
   }
 
-  public String toJson(Object bean) {
-    try {
-      return getObjectMapper().writeValueAsString(bean);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
+  public String toJson(Object bean) throws JsonProcessingException {
+    return getObjectMapper().writeValueAsString(bean);
   }
 
-  public <T> T formJson(String json, Class<T> c) {
-    T bean;
-    try {
-      bean = getObjectMapper().readValue(json, c);
-      return bean;
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  public <T> T formJson(String json, Class<T> c) throws JsonParseException, JsonMappingException, IOException {
+    return getObjectMapper().readValue(json, c);
   }
 
 }

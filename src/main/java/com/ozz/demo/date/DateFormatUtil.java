@@ -37,12 +37,8 @@ public class DateFormatUtil {
     return format(new Date(), "yyyy-MM-dd HHmmss SSS");
   }
 
-  public Date parseDate(String date) {
-    try {
-      return DateUtils.parseDate(date, PATTERNS);
-    } catch (ParseException e) {
-      throw new RuntimeException(e);
-    }
+  public Date parseDate(String date) throws ParseException {
+    return DateUtils.parseDate(date, PATTERNS);
   }
 
   public String getTimeStringByMillis(long millis) {

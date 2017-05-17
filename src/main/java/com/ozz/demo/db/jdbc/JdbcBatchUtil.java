@@ -3,6 +3,7 @@ package com.ozz.demo.db.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Map;
 
 import com.ozz.demo.db.jdbc.base.ColumnInfo;
@@ -21,6 +22,6 @@ public abstract class JdbcBatchUtil {
 
   public abstract Map<String, ColumnInfo> queryColumnInfo(Connection conn, String tableName) throws SQLException;
 
-  public abstract void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException;
+  public abstract void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException, ParseException;
 
 }

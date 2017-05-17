@@ -29,7 +29,7 @@ public class ExcelTreeToSheet {
 
   // private Logger logger = Logger.getLogger(TreeToSheet.class);
 
-  public <T> Sheet transferTreeToSheet(Workbook wb, String sheetName, List<T> treeList, List<String> props, String childProp) {
+  public <T> Sheet transferTreeToSheet(Workbook wb, String sheetName, List<T> treeList, List<String> props, String childProp) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     // 标题样式
     List<CellStyle> headStyles = new ArrayList<CellStyle>();
     CellStyle headStyle = wb.createCellStyle();
@@ -51,7 +51,7 @@ public class ExcelTreeToSheet {
   }
 
   private <T> Sheet createSheet(Workbook workbook, String sheetName, List<T> treeList, List<String> props, String childProp, List<CellStyle> headStyles,
-      CellStyle bodyStyle) {
+      CellStyle bodyStyle) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     Sheet sheet = workbook.createSheet(sheetName);
 
     sheet.createRow(0);
@@ -67,7 +67,7 @@ public class ExcelTreeToSheet {
 
   @SuppressWarnings("unchecked")
   private <T> void createClassSheet(Sheet sheet, List<CellStyle> headStyles, CellStyle bodyStyle, T model, List<String> props, String childProp,
-      int level, boolean createNewRw) {
+      int level, boolean createNewRw) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     createClassMess(sheet, headStyles, bodyStyle, model, props, childProp, level, createNewRw);
 
     if (StringUtils.isEmpty(childProp)) {
@@ -91,7 +91,7 @@ public class ExcelTreeToSheet {
   }
 
   private <T> void createClassMess(Sheet sheet, List<CellStyle> headStyles, CellStyle bodyStyle, T model, List<String> props, String childProp,
-      int level, boolean createNewRw) {
+      int level, boolean createNewRw) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     Row row;
     if (createNewRw) {
       row = sheet.createRow(sheet.getLastRowNum() + 1);
@@ -124,23 +124,9 @@ public class ExcelTreeToSheet {
     }
   }
 
-  private <T> Object getProp(T model, String propName) {
-    Object value;
-    try {
-      Method method = model.getClass().getDeclaredMethod("get" + propName.substring(0, 1).toUpperCase() + propName.replaceFirst("^\\w", ""));
-      value = method.invoke(model);
-      return value;
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    } catch (SecurityException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalArgumentException e) {
-      throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
+  private <T> Object getProp(T model, String propName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    Method method = model.getClass().getDeclaredMethod("get" + propName.substring(0, 1).toUpperCase() + propName.replaceFirst("^\\w", ""));
+    return method.invoke(model);
   }
 
 }

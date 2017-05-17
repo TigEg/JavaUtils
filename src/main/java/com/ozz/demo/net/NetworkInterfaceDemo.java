@@ -28,16 +28,12 @@ public class NetworkInterfaceDemo {
     }
   }
 
-  public String getIPByHost(String host) {
-    try {
-      InetAddress address = InetAddress.getByName(host);
-      return address.getHostAddress();
-    } catch (UnknownHostException e) {
-      throw new RuntimeException(e);
-    }
+  public String getIPByHost(String host) throws UnknownHostException {
+    InetAddress address = InetAddress.getByName(host);
+    return address.getHostAddress();
   }
 
-  public String getUrlReplaceHostToIp(String url) {
+  public String getUrlReplaceHostToIp(String url) throws UnknownHostException {
     String host = getHostFromUrl(url);
     String ip = getIPByHost(host);
     if (host.equals(ip)) {

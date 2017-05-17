@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class JdbcSqlserverBatchUtil extends JdbcBatchUtil {
   }
 
   @Override
-  public void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException {
+  public void setParameter(PreparedStatement ps, int parameterIndex, String value, ColumnInfo colInfo) throws SQLException, ParseException {
     if ("nvarchar".equals(colInfo.getDataType()) || "varchar".equals(colInfo.getDataType())) {
       ps.setString(parameterIndex, value);
     } else if ("int".equals(colInfo.getDataType())) {

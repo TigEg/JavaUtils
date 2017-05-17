@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -29,28 +30,20 @@ public class ExcelUtil {
   private DateFormatUtil dateFormatUtil;
   private NumberFormatUtil numberFormatUtil;
 
-  public Workbook open(File file) throws IOException {
-    try(FileInputStream input = new FileInputStream(file);) {
+  public Workbook open(File file) throws IOException, EncryptedDocumentException, InvalidFormatException {
+    try (FileInputStream input = new FileInputStream(file);) {
       return open(input);
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
     }
   }
 
-  public Workbook open(InputStream input) {
-    try {
-      Workbook workbook = WorkbookFactory.create(input);
-      return workbook;
-    } catch (InvalidFormatException | IOException e) {
-      throw new RuntimeException(e);
-    }
+  public Workbook open(InputStream input) throws EncryptedDocumentException, InvalidFormatException, IOException {
+    Workbook workbook = WorkbookFactory.create(input);
+    return workbook;
   }
 
-  public void write(Workbook workbook, File file) {
+  public void write(Workbook workbook, File file) throws FileNotFoundException, IOException {
     try (OutputStream out = new FileOutputStream(file)) {
       workbook.write(out);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -91,15 +84,15 @@ public class ExcelUtil {
     String result = null;
     try {
       if (cell.getCellTypeEnum() == CellType.NUMERIC) {// 数字类型
-          if (DateUtil.isCellDateFormatted(cell)) {// 时间
-            Date date = cell.getDateCellValue();
-            result = dateFormatUtil.formatDate(date);
-          } else {
-            return String.valueOf(cell.getNumericCellValue()).replaceFirst("\\.0+", "");
-          }
-      } else if(cell.getCellTypeEnum() == CellType.STRING) {// String类型
+        if (DateUtil.isCellDateFormatted(cell)) {// 时间
+          Date date = cell.getDateCellValue();
+          result = dateFormatUtil.formatDate(date);
+        } else {
+          return String.valueOf(cell.getNumericCellValue()).replaceFirst("\\.0+", "");
+        }
+      } else if (cell.getCellTypeEnum() == CellType.STRING) {// String类型
         result = cell.getStringCellValue();
-      } else if(cell.getCellTypeEnum() == CellType.BLANK) {
+      } else if (cell.getCellTypeEnum() == CellType.BLANK) {
         result = "";
       } else {
         result = "";
@@ -185,4 +178,5 @@ public class ExcelUtil {
   public Workbook create() {
     return new XSSFWorkbook();
   }
+
 }

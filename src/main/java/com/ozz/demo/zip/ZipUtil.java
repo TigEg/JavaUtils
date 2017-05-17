@@ -33,7 +33,8 @@ public class ZipUtil {
     }
   }
 
-  private void zipFiles(File zipFile, File[] files, ZipOutputStream out, String zipSubFolder) {
+  private void zipFiles(File zipFile, File[] files, ZipOutputStream out, String zipSubFolder)
+      throws IOException {
     InputStream in;
     String filePath;
     ZipEntry entry;
@@ -44,19 +45,13 @@ public class ZipUtil {
 
       filePath = zipSubFolder + file.getName() + (file.isDirectory() ? File.separator : "");
       entry = new ZipEntry(filePath);
-      try {
-        out.putNextEntry(entry);
-        if (file.isDirectory()) {
-          zipFiles(zipFile, file.listFiles(), out, filePath);
-        } else {
-          in = new FileInputStream(file);
-          IOUtils.copy(in, out);
-          in.close();
-        }
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      out.putNextEntry(entry);
+      if (file.isDirectory()) {
+        zipFiles(zipFile, file.listFiles(), out, filePath);
+      } else {
+        in = new FileInputStream(file);
+        IOUtils.copy(in, out);
+        in.close();
       }
     }
   }
