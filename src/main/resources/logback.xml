@@ -35,11 +35,11 @@
 	</appender>
 
 	<logger name="com.ozz" level="DEBUG" additivity="false">
-		<!-- <appender-ref ref="STDOUT" /> -->
+		<appender-ref ref="STDOUT" />
 		<appender-ref ref="file" />
 	</logger>
 	<root level="info" additivity="false">
-		<!-- <appender-ref ref="STDOUT" /> -->
+		<appender-ref ref="STDOUT" />
 		<appender-ref ref="file" />
 	</root>
 </configuration>
