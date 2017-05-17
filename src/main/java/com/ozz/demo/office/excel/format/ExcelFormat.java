@@ -51,11 +51,11 @@ public class ExcelFormat {
 
   }
 
-  public void mergeRegion(Sheet sheet, int startIndex) {
+  public void mergeRegion(Sheet sheet, int startRowNum) {
     Row row;
     String value;
     int endIndex;
-    for (int i = startIndex; i <= sheet.getLastRowNum(); i++) {
+    for (int i = startRowNum; i <= sheet.getLastRowNum(); i++) {
       row = sheet.getRow(i);
       for (int j = 0; j <= row.getLastCellNum(); j++) {
         value = excelUtil.getCellStringValue(row, j);

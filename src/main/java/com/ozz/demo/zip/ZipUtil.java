@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.zip.ZipException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.zip.ZipEntry;
@@ -19,29 +18,22 @@ public class ZipUtil {
 
   public final String DEFAULT_ENCODING = "gb2312";
 
-  public void zipFiles(File zipFile, File[] files) {
-    try {
-      for (File file : files) {
-        if (!file.exists()) {
-          throw new FileNotFoundException(file.getPath());
-        }
+  public void zipFiles(File zipFile, File[] files) throws IOException {
+    for (File file : files) {
+      if (!file.exists()) {
+        throw new FileNotFoundException(file.getPath());
       }
+    }
 
-      ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+    try (OutputStream fo = new FileOutputStream(zipFile);
+        ZipOutputStream out = new ZipOutputStream(fo);) {
       out.setEncoding(DEFAULT_ENCODING);
 
       zipFiles(zipFile, files, out, "");
-
-      out.flush();
-      out.close();
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
-  private void zipFiles(File zipFile, File[] files, ZipOutputStream out, String target) {
+  private void zipFiles(File zipFile, File[] files, ZipOutputStream out, String zipSubFolder) {
     InputStream in;
     String filePath;
     ZipEntry entry;
@@ -50,7 +42,7 @@ public class ZipUtil {
         continue;
       }
 
-      filePath = target + file.getName() + (file.isDirectory() ? File.separator : "");
+      filePath = zipSubFolder + file.getName() + (file.isDirectory() ? File.separator : "");
       entry = new ZipEntry(filePath);
       try {
         out.putNextEntry(entry);
@@ -69,52 +61,36 @@ public class ZipUtil {
     }
   }
 
-  public void extractFiles(File zipFile, String destDir, boolean overrideExists) {
+  public void extractFiles(File zipFile, String destDir, boolean overrideExists)
+      throws IOException {
     if (!zipFile.exists()) {
       throw new RuntimeException("FileNotFound: " + zipFile.getPath());
     }
 
-    ZipFile zf;
-    try {
-      zf = new ZipFile(zipFile, DEFAULT_ENCODING);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    try (ZipFile zf = new ZipFile(zipFile, DEFAULT_ENCODING);) {
+      Enumeration<ZipEntry> en = zf.getEntries();
+      ZipEntry ze;
+      File file;
+      while (en.hasMoreElements()) {
+        ze = en.nextElement();
+        file = new File(destDir + File.separator + ze.getName());
 
-    Enumeration<ZipEntry> en = zf.getEntries();
-    ZipEntry ze;
-    File file;
-    OutputStream output = null;
-    InputStream input = null;
-    while (en.hasMoreElements()) {
-      ze = en.nextElement();
-      file = new File(destDir + File.separator + ze.getName());
+        if (ze.isDirectory()) {
+          if (!file.exists()) {
+            file.mkdirs();
+          }
+        } else {
+          if (file.exists() && !overrideExists) {
+            throw new RuntimeException("要解压的文件已存在: " + file.getPath());
+          }
+          if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+          }
 
-      if (ze.isDirectory()) {
-        if (!file.exists()) {
-          file.mkdirs();
-        }
-      } else {
-        if (file.exists() && !overrideExists) {
-          throw new RuntimeException("要解压的文件已存在: " + file.getPath());
-        }
-        if (!file.getParentFile().exists()) {
-          file.getParentFile().mkdirs();
-        }
-
-        try {
-          output = new FileOutputStream(file);
-          input = zf.getInputStream(ze);
-          IOUtils.copy(input, output);
-        } catch (FileNotFoundException e) {
-          throw new RuntimeException(e);
-        } catch (ZipException e) {
-          throw new RuntimeException(e);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } finally {
-          IOUtils.closeQuietly(output);
-          IOUtils.closeQuietly(input);
+          try (OutputStream output = new FileOutputStream(file);
+              InputStream input = zf.getInputStream(ze);) {
+            IOUtils.copy(input, output);
+          }
         }
       }
     }
