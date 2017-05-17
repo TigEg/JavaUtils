@@ -2,8 +2,10 @@ package com.ozz.demo.office.excel.format;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 import com.ozz.demo.office.excel.ExcelCellStyleUtil;
 import com.ozz.demo.office.excel.ExcelUtil;
@@ -77,7 +79,7 @@ public class ExcelFormat {
 
           if (endIndex > i) {
             excelCellStyleUtil.addMergedRegion(sheet, i, endIndex, j, j);
-            excelCellStyleUtil.setAlignment(sheet.getRow(i).getCell(j).getCellStyle(), CellStyle.ALIGN_LEFT, CellStyle.VERTICAL_TOP);
+            excelCellStyleUtil.setAlignment(sheet.getRow(i).getCell(j).getCellStyle(), HorizontalAlignment.LEFT, VerticalAlignment.TOP);
           }
         }
 

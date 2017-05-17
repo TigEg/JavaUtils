@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -89,23 +90,19 @@ public class ExcelUtil {
 
     String result = null;
     try {
-      switch (cell.getCellType()) {
-        case Cell.CELL_TYPE_NUMERIC:// 数字类型
+      if (cell.getCellTypeEnum() == CellType.NUMERIC) {// 数字类型
           if (DateUtil.isCellDateFormatted(cell)) {// 时间
             Date date = cell.getDateCellValue();
             result = dateFormatUtil.formatDate(date);
           } else {
             return String.valueOf(cell.getNumericCellValue()).replaceFirst("\\.0+", "");
           }
-          break;
-        case Cell.CELL_TYPE_STRING:// String类型
-          result = cell.getStringCellValue();
-          break;
-        case Cell.CELL_TYPE_BLANK:
-          result = "";
-        default:
-          result = "";
-          break;
+      } else if(cell.getCellTypeEnum() == CellType.STRING) {// String类型
+        result = cell.getStringCellValue();
+      } else if(cell.getCellTypeEnum() == CellType.BLANK) {
+        result = "";
+      } else {
+        result = "";
       }
     } catch (Exception e) {
       throw new RuntimeException("读取Excel错误, " + getCellInfo(cell), e);
