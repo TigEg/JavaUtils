@@ -2,7 +2,7 @@ package com.ozz.demo.date;
 
 import java.util.Calendar;
 
-public class CalendarUtil {
+public class CalendarDemo {
 
   public Calendar addDay(Calendar cal, int day) {
     cal.add(Calendar.DAY_OF_MONTH, day);

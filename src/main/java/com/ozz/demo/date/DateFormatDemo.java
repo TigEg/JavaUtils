@@ -10,7 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * 
  * @author ozz
  */
-public class DateFormatUtil {
+public class DateFormatDemo {
 
   public String PATTERN_YEAR = "yyyy";
   public String PATTERN_DATE = "yyyy-MM-dd";

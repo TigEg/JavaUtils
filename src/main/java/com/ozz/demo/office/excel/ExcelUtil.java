@@ -23,11 +23,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ozz.demo.date.DateFormatUtil;
+import com.ozz.demo.date.DateFormatDemo;
 import com.ozz.demo.text.NumberFormatUtil;
 
 public class ExcelUtil {
-  private DateFormatUtil dateFormatUtil;
+  private DateFormatDemo dateFormatUtil;
   private NumberFormatUtil numberFormatUtil;
 
   public Workbook open(File file) throws IOException, EncryptedDocumentException, InvalidFormatException {

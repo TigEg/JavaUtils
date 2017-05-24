@@ -13,11 +13,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ozz.demo.date.DateFormatUtil;
+import com.ozz.demo.date.DateFormatDemo;
 import com.ozz.demo.db.jdbc.JdbcBatchUtil;
 
 public class JdbcSqlserverBatchUtil extends JdbcBatchUtil {
-  private DateFormatUtil dateFormatUtil;
+  private DateFormatDemo dateFormatUtil;
 
   @Override
   public Map<String, ColumnInfo> queryColumnInfo(Connection conn, String tableName) throws SQLException {
