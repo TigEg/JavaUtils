@@ -9,8 +9,6 @@ import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.Test;
-
 /**
  * 
  * 
@@ -41,11 +39,6 @@ public class NetworkInterfaceDemo {
     } else {
       return url.replace(host, ip);
     }
-  }
-
-  @Test
-  public void test() throws SocketException {
-    System.out.println(getLocalHost().getHostAddress());
   }
 
   public InetAddress getLocalHost() throws SocketException {
