@@ -27,7 +27,7 @@ public class ExcelTreeToSheet {
   private ExcelFormat excelFormat;
   private ExcelCellStyleUtil excelCellStyleUtil;
 
-  // private Logger logger = Logger.getLogger(TreeToSheet.class);
+  // private Logger logger = Logger.getLogger(getClass());
 
   public <T> Sheet transferTreeToSheet(Workbook wb, String sheetName, List<T> treeList, List<String> props, String childProp) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     // 标题样式
