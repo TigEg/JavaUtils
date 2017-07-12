@@ -1,16 +1,17 @@
 package com.ozz.demo.encrypt;
 
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 public class JasyptDemo {
   public String encrypt(String password, String message) {
-    StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); 
+    PBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); 
     encryptor.setPassword(password);
     return encryptor.encrypt(message);
   }
 
   public String decrypt(String password, String encryptedMessage) {
-    StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+    PBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
     encryptor.setPassword(password);
     return encryptor.decrypt(encryptedMessage);
   }
