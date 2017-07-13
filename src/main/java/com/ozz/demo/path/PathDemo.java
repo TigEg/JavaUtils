@@ -66,5 +66,18 @@ public class PathDemo {
   public boolean equals(Path path1, Path path2) throws FileNotFoundException, IOException {
       return StringUtils.equals(digestDemo.digest(path1), digestDemo.digest(path2));
   }
-  
+
+  /**
+   * 相对路径
+   */
+  public void relativize(Path root, Path path) {
+    // 获取相对路径
+    Path r = root.relativize(path);
+    // 解析相对路径
+    Path newPath = root.resolve(r);
+    if(!newPath.equals(path)) {
+      throw new RuntimeException("解析路径错误");
+    }
+  }
+
 }
