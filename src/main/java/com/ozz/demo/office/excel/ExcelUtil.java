@@ -1,12 +1,13 @@
 package com.ozz.demo.office.excel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +31,12 @@ public class ExcelUtil {
   private DateFormatDemo dateFormatUtil;
   private NumberFormatUtil numberFormatUtil;
 
-  public Workbook open(File file) throws IOException, EncryptedDocumentException, InvalidFormatException {
-    try (FileInputStream input = new FileInputStream(file);) {
+  public Workbook create() {
+    return new XSSFWorkbook();
+  }
+
+  public Workbook open(Path path) throws IOException, EncryptedDocumentException, InvalidFormatException {
+    try (InputStream input = Files.newInputStream(path)) {
       return open(input);
     }
   }
@@ -41,8 +46,8 @@ public class ExcelUtil {
     return workbook;
   }
 
-  public void write(Workbook workbook, File file) throws FileNotFoundException, IOException {
-    try (OutputStream out = new FileOutputStream(file)) {
+  public void write(Workbook workbook, Path path) throws FileNotFoundException, IOException {
+    try (OutputStream out = Files.newOutputStream(path)) {
       workbook.write(out);
     }
   }
@@ -173,10 +178,6 @@ public class ExcelUtil {
         map.put(value, value);
       }
     }
-  }
-
-  public Workbook create() {
-    return new XSSFWorkbook();
   }
 
 }
