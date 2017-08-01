@@ -156,26 +156,18 @@ public class ExcelUtil {
     }
   }
 
-  public void removeRepeat(Sheet sheet, int colIndex) {
-    Map<String, String> map = new HashMap<String, String>();
-    String value;
-    long timestamp = System.currentTimeMillis();
-    for (int rowIndex = sheet.getLastRowNum(); rowIndex >= 0; rowIndex--) {
-      value = getCellStringValue(sheet.getRow(rowIndex), colIndex);
-      if (StringUtils.isEmpty(value)) {
-        continue;
-      }
-
-      if (System.currentTimeMillis() - timestamp > 3000) {
-        System.out.println("check repeat row " + rowIndex);
-        timestamp = System.currentTimeMillis();
-      }
-      if (map.containsKey(value)) {
-        removeRow(sheet, rowIndex);
-      } else {
-        map.put(value, value);
+  public void loop(Workbook wb) {
+    int sheetCount = wb.getNumberOfSheets();
+    for (int i = 0; i < sheetCount; i++) {
+      Sheet sheet = wb.getSheetAt(i);
+      int rowCount = sheet.getPhysicalNumberOfRows();
+      for (int j = 0; j < rowCount; j++) {
+        Row row = sheet.getRow(j);
+        int cellcount = row.getPhysicalNumberOfCells();
+        for (int k = 0; k < cellcount; k++) {
+          System.out.println("sheet:" + sheet.getSheetName() + ",row:" + (j + 1) + ",cell:" + numberFormatUtil.formatEnglish(k + 1)+" = " + getCellStringValue(row, k));
+        }
       }
     }
   }
-
 }
