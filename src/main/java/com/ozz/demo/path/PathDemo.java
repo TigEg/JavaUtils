@@ -80,4 +80,11 @@ public class PathDemo {
     }
   }
 
+  public String getFileName(Path path) {
+    return path.getFileName().toString();
+  }
+  
+  public long getSize(Path path) throws IOException {
+    return Files.size(path);
+  }
 }
