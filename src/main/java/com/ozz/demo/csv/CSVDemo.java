@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
@@ -35,8 +36,9 @@ public class CSVDemo {
     CSVFormat format = CSVFormat.EXCEL.withHeader(FILE_HEADER).withSkipHeaderRecord();
 
     // 读出数据的代码
-    try (Reader in = new InputStreamReader(new FileInputStream(FILE_NAME), "gbk")) {
-      Iterable<CSVRecord> records = format.parse(in);
+    try (InputStream in = new FileInputStream(FILE_NAME);
+        Reader reader = new InputStreamReader(in, "gbk")) {
+      Iterable<CSVRecord> records = format.parse(reader);
       String strID;
       String strName;
       for (CSVRecord record : records) {
