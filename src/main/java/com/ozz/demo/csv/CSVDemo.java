@@ -39,12 +39,8 @@ public class CSVDemo {
     try (InputStream in = new FileInputStream(FILE_NAME);
         Reader reader = new InputStreamReader(in, "gbk")) {
       Iterable<CSVRecord> records = format.parse(reader);
-      String strID;
-      String strName;
       for (CSVRecord record : records) {
-        strID = record.get("Id");
-        strName = record.get("Name");
-        System.out.println(strID + " " + strName);
+        record.forEach(t -> {System.out.println(t + " ");});
       }
     }
   }
