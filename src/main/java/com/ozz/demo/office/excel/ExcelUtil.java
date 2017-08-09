@@ -89,9 +89,9 @@ public class ExcelUtil {
       if (cell.getCellTypeEnum() == CellType.NUMERIC) {// 数字类型
         if (DateUtil.isCellDateFormatted(cell)) {// 时间
           Date date = cell.getDateCellValue();
-          result = dateFormatUtil.formatDate(date);
+          result = dateFormatUtil.format(date, getDateFormatString(cell.getCellStyle().getDataFormatString()));
         } else {
-          return String.valueOf(cell.getNumericCellValue()).replaceFirst("\\.0+", "");
+          result = String.valueOf(cell.getNumericCellValue()).replaceFirst("\\.0+", "");
         }
       } else if (cell.getCellTypeEnum() == CellType.STRING) {// String类型
         result = cell.getStringCellValue();
@@ -107,6 +107,16 @@ public class ExcelUtil {
       result = result.trim();
     }
     return result;
+  }
+
+  public String getDateFormatString(String formatString) {
+    if ("reserved-0x1F".equals(formatString) || "m/d/yy".equals(formatString) || "m/d/yy".equals(formatString)) {
+      return "yyyy-MM-dd";
+    } else if ("m/d/yy h:mm".equals(formatString)) {
+      return "yyyy-MM-dd h:mm";
+    } else {
+      throw new RuntimeException("解析excel错误:暂不支持此日期格式"+formatString);
+    }
   }
 
   public Date getCellDateValue(Row row, int colIndex) {
