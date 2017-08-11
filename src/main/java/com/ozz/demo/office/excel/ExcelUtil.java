@@ -6,13 +6,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -21,6 +25,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.xml.sax.SAXException;
 
 import com.ozz.demo.date.DateFormatDemo;
 import com.ozz.demo.text.NumberFormatUtil;
@@ -28,6 +33,13 @@ import com.ozz.demo.text.NumberFormatUtil;
 public class ExcelUtil {
   private DateFormatDemo dateFormatUtil;
   private NumberFormatUtil numberFormatUtil;
+
+  public static void main(String[] args) throws IOException, OpenXML4JException, SAXException, ParserConfigurationException {
+    ExcelUtil util = new ExcelUtil();
+    Workbook wb = util.open(Paths.get("C:/Users/ouzezhou/Desktop/Temp/20170811/班级模板0811.xlsx"));
+    Row row = wb.getSheetAt(0).getRow(1);
+    System.out.println(util.getCellStringValue(row, 8));
+  }
 
   public Workbook create() {
     return new XSSFWorkbook();
@@ -115,7 +127,7 @@ public class ExcelUtil {
     } else if ("m/d/yy h:mm".equals(formatString)) {
       return "yyyy-MM-dd h:mm";
     } else {
-      throw new RuntimeException("解析excel错误:暂不支持此日期格式"+formatString);
+      return formatString;
     }
   }
 

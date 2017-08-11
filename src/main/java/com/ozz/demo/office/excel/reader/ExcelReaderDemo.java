@@ -33,7 +33,7 @@ public class ExcelReaderDemo {
     try (InputStream inStream = Files.newInputStream(path); OPCPackage pkg = OPCPackage.open(inStream);) {
       XSSFReader xssfReader = new XSSFReader(pkg);
       StylesTable styles = xssfReader.getStylesTable();
-      ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(pkg);
+      ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(pkg, false);
 
       try (InputStream sheetInputStream = xssfReader.getSheetsData().next();) {
         List<Map<String, String>> data = parse(styles, strings, sheetInputStream);
