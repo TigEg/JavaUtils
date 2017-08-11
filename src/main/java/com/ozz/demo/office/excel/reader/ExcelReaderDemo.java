@@ -26,36 +26,28 @@ import com.ozz.demo.office.excel.reader.base.SimpleXSSFSheetXMLHandler;
 
 public class ExcelReaderDemo {
   public static void main(String[] args) throws IOException, OpenXML4JException, SAXException, ParserConfigurationException {
-    new ExcelReaderDemo().parse(Paths.get("C:/Users/ouzezhou/Desktop/Temp/20170711/修改教师模板 (2).xlsx"));
+    List<Map<String, String>> data = new ExcelReaderDemo().parse(Paths.get("C:/Users/ouzezhou/Desktop/Temp/20170711/修改教师模板 (2).xlsx"));
+    for(Map<String, String> row : data) {
+      for(Entry<String, String> cell : row.entrySet()) {
+        System.out.println(cell.getKey() + "=" +cell.getValue());
+      }
+    }
   }
 
-  public void parse(Path path) throws IOException, OpenXML4JException, SAXException, ParserConfigurationException {
+  public List<Map<String, String>> parse(Path path) throws IOException, OpenXML4JException, SAXException, ParserConfigurationException {
     try (InputStream inStream = Files.newInputStream(path); OPCPackage pkg = OPCPackage.open(inStream);) {
       XSSFReader xssfReader = new XSSFReader(pkg);
       StylesTable styles = xssfReader.getStylesTable();
       ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(pkg, false);
 
       try (InputStream sheetInputStream = xssfReader.getSheetsData().next();) {
-        List<Map<String, String>> data = parse(styles, strings, sheetInputStream);
-        for(Map<String, String> row : data) {
-          for(Entry<String, String> cell : row.entrySet()) {
-            System.out.println(cell.getKey() + "=" +cell.getValue());
-          }
-        }
+        XMLReader sheetParser = SAXHelper.newXMLReader();
+        SimpleSheetContentsHandler handler = new SimpleSheetContentsHandler();
+        sheetParser.setContentHandler(new SimpleXSSFSheetXMLHandler(styles, strings, handler, false));
+        sheetParser.parse(new InputSource(sheetInputStream));
+        return handler.getData();
       }
     }
   }
 
-  private List<Map<String, String>> parse(StylesTable styles,
-      ReadOnlySharedStringsTable strings, InputStream sheetInputStream)
-      throws SAXException, ParserConfigurationException, IOException {
-    XMLReader sheetParser = SAXHelper.newXMLReader();
-
-    SimpleSheetContentsHandler handler = new SimpleSheetContentsHandler();
-    sheetParser.setContentHandler(new SimpleXSSFSheetXMLHandler(styles, strings, handler, false));
-
-    sheetParser.parse(new InputSource(sheetInputStream));
-
-    return handler.getData();
-  }
 }
