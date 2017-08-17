@@ -15,7 +15,11 @@ public class SimpleXSSFSheetXMLHandler extends XSSFSheetXMLHandler {
 
   @Override
   String parseNmuber(StringBuffer value, DataFormatter formatter, short formatIndex, String formatString) {
-    formatString = new ExcelUtil().getDateFormatString(formatString);
-    return super.parseNmuber(value, formatter, formatIndex, formatString);
+    if("General".equals(formatString)) {
+      return value.toString();
+    } else {
+      formatString = new ExcelUtil().getDateFormatString(formatString);
+      return super.parseNmuber(value, formatter, formatIndex, formatString);
+    }
   }
 }

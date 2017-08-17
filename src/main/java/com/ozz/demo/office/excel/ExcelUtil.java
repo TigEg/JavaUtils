@@ -122,7 +122,7 @@ public class ExcelUtil {
   }
 
   public String getDateFormatString(String formatString) {
-    if ("reserved-0x1F".equals(formatString) || "m/d/yy".equals(formatString) || "m/d/yy".equals(formatString)) {
+    if ("m/d/yy".equals(formatString) || "m/d/yy".equals(formatString)) {
       return "yyyy-MM-dd";
     } else if ("m/d/yy h:mm".equals(formatString)) {
       return "yyyy-MM-dd h:mm";
