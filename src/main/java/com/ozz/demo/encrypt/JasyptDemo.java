@@ -5,7 +5,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 public class JasyptDemo {
   public String encrypt(String password, String message) {
-    PBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); 
+    PBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
     encryptor.setPassword(password);
     return encryptor.encrypt(message);
   }
