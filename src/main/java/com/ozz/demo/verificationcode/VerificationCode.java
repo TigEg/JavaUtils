@@ -3,17 +3,14 @@ package com.ozz.demo.verificationcode;
 import java.awt.image.BufferedImage;
 import java.util.Properties;
 
-import org.junit.Test;
-
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 
 public class VerificationCode {
-  @Test
-  public void test() {
+  public static void main(String[] args) {
     try {
-      createVerficationCode();
+      new VerificationCode().createVerficationCode();
     } catch (Exception e) {
       e.printStackTrace();
     }
