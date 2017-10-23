@@ -55,7 +55,10 @@ public class CSVDemo {
     
     Files.deleteIfExists(path);
     Files.createFile(path);
-    try (BufferedWriter out = Files.newBufferedWriter(path, Charset.forName("gbk")); CSVPrinter printer = new CSVPrinter(out, format)) {
+    try (BufferedWriter out = Files.newBufferedWriter(path, Charset.forName("UTF-8")); CSVPrinter printer = new CSVPrinter(out, format)) {
+      String bomStr = new String(new byte[] {(byte) 0xef, (byte) 0xbb, (byte) 0xbf}, "UTF-8");
+      out.write(bomStr);
+      
       // 第一行
       String[] student = students[0];
       printer.print(student[0]);
