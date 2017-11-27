@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ozz.demo.encrypt.DigestDemo;
+import com.ozz.demo.encrypt.digest.DigestDemo;
 
 public class PathDemo {
   private DigestDemo digestDemo;

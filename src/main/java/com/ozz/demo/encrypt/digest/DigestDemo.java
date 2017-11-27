@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt;
+package com.ozz.demo.encrypt.digest;
 
 import java.io.IOException;
 import java.io.InputStream;
