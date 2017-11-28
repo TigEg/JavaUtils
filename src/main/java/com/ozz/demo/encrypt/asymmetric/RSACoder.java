@@ -11,12 +11,11 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.Cipher;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * 非对称加密算法
@@ -39,7 +38,7 @@ public abstract class RSACoder {
    */
   public static String sign(byte[] data, String privateKey) throws Exception {
     // 解密由base64编码的私钥
-    byte[] keyBytes = Base64.decodeBase64(privateKey);
+    byte[] keyBytes = Base64.getDecoder().decode(privateKey);
 
     // 构造PKCS8EncodedKeySpec对象
     PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -55,7 +54,7 @@ public abstract class RSACoder {
     signature.initSign(priKey);
     signature.update(data);
 
-    return Base64.encodeBase64String(signature.sign());
+    return Base64.getEncoder().encodeToString(signature.sign());
   }
 
   /**
@@ -72,7 +71,7 @@ public abstract class RSACoder {
   public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
 
     // 解密由base64编码的公钥
-    byte[] keyBytes = Base64.decodeBase64(publicKey);
+    byte[] keyBytes = Base64.getDecoder().decode(publicKey);
 
     // 构造X509EncodedKeySpec对象
     X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
@@ -88,7 +87,7 @@ public abstract class RSACoder {
     signature.update(data);
 
     // 验证签名是否正常
-    return signature.verify(Base64.decodeBase64(sign));
+    return signature.verify(Base64.getDecoder().decode(sign));
   }
 
   /**
@@ -101,8 +100,8 @@ public abstract class RSACoder {
    * @throws Exception
    */
   public static String decryptByPrivateKey(String data, String key) throws Exception {
-    byte[] byteData = Base64.decodeBase64(data);
-    byte[] keyBytes = Base64.decodeBase64(key);
+    byte[] byteData = Base64.getDecoder().decode(data);
+    byte[] keyBytes = Base64.getDecoder().decode(key);
 
     // 取得私钥
     PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -126,8 +125,8 @@ public abstract class RSACoder {
    * @throws Exception
    */
   public static String decryptByPublicKey(String data, String key) throws Exception {
-    byte[] byteData = Base64.decodeBase64(data);
-    byte[] keyBytes = Base64.decodeBase64(key);
+    byte[] byteData = Base64.getDecoder().decode(data);
+    byte[] keyBytes = Base64.getDecoder().decode(key);
 
     // 取得公钥
     X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
@@ -151,7 +150,7 @@ public abstract class RSACoder {
    * @throws Exception
    */
   public static String encryptByPublicKey(String data, String key) throws Exception {
-    byte[] keyBytes = Base64.decodeBase64(key);
+    byte[] keyBytes = Base64.getDecoder().decode(key);
     
 
     // 取得公钥
@@ -163,7 +162,7 @@ public abstract class RSACoder {
     Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
     cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
-    return Base64.encodeBase64String(cipher.doFinal(data.getBytes()));
+    return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes()));
   }
 
   /**
@@ -177,7 +176,7 @@ public abstract class RSACoder {
    */
   public static String encryptByPrivateKey(String data, String key) throws Exception {
     byte[] byteData = data.getBytes();
-    byte[] keyBytes = Base64.decodeBase64(key);
+    byte[] keyBytes = Base64.getDecoder().decode(key);
 
     // 取得私钥
     PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -188,7 +187,7 @@ public abstract class RSACoder {
     Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
     cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 
-    return Base64.encodeBase64String(cipher.doFinal(byteData));
+    return Base64.getEncoder().encodeToString(cipher.doFinal(byteData));
   }
 
   /**
@@ -201,7 +200,7 @@ public abstract class RSACoder {
   public static String getPrivateKey(Map<String, Object> keyMap) throws Exception {
     Key key = (Key) keyMap.get(PRIVATE_KEY);
 
-    return Base64.encodeBase64String(key.getEncoded());
+    return Base64.getEncoder().encodeToString(key.getEncoded());
   }
 
   /**
@@ -214,7 +213,7 @@ public abstract class RSACoder {
   public static String getPublicKey(Map<String, Object> keyMap) throws Exception {
     Key key = (Key) keyMap.get(PUBLIC_KEY);
 
-    return Base64.encodeBase64String(key.getEncoded());
+    return Base64.getEncoder().encodeToString(key.getEncoded());
   }
 
   /**

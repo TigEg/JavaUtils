@@ -42,6 +42,7 @@ public class RSACoderTest {
     String inputStr = "sign";
 
     String encodedData = RSACoder.encryptByPrivateKey(inputStr, privateKey);
+    System.out.println("密文: " + new String(encodedData));
 
     String outputStr = RSACoder.decryptByPublicKey(encodedData, publicKey);
 

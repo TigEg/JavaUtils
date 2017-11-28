@@ -1,12 +1,12 @@
 package com.ozz.demo.encrypt.symmetric;
 
 import java.security.Key;
+import java.util.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * AES对称加密算法
@@ -46,7 +46,7 @@ public class EncryptDemo { // 密钥算法
     KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM); // 实例化密钥生成器
     kg.init(128); // 初始化密钥生成器:AES要求密钥长度为128,192,256位
     SecretKey secretKey = kg.generateKey(); // 生成密钥
-    return Base64.encodeBase64String(secretKey.getEncoded()); // 获取二进制密钥编码形式
+    return Base64.getEncoder().encodeToString(secretKey.getEncoded()); // 获取二进制密钥编码形式
   }
 
   /**
@@ -64,12 +64,12 @@ public class EncryptDemo { // 密钥算法
    * @return 加密后的数据
    */
   public String encrypt(String key, String data) throws Exception {
-    Key k = toKey(Base64.decodeBase64(key)); // 还原密钥
+    Key k = toKey(Base64.getDecoder().decode(key)); // 还原密钥
     // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
     // Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
     Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM); // 实例化Cipher对象，它用于完成实际的加密操作
     cipher.init(Cipher.ENCRYPT_MODE, k); // 初始化Cipher对象，设置为加密模式
-    return Base64.encodeBase64String(cipher.doFinal(data.getBytes())); // 执行加密操作。加密后的结果通常都会用Base64编码进行传输
+    return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes())); // 执行加密操作。加密后的结果通常都会用Base64编码进行传输
   }
 
   /**
@@ -80,10 +80,10 @@ public class EncryptDemo { // 密钥算法
    * @return 解密后的数据
    */
   public String decrypt(String key, String data) throws Exception {
-    Key k = toKey(Base64.decodeBase64(key));
+    Key k = toKey(Base64.getDecoder().decode(key));
     Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
     cipher.init(Cipher.DECRYPT_MODE, k); // 初始化Cipher对象，设置为解密模式
-    return new String(cipher.doFinal(Base64.decodeBase64(data))); // 执行解密操作
+    return new String(cipher.doFinal(Base64.getDecoder().decode(data))); // 执行解密操作
   }
 
   public static void main(String[] args) throws Exception {
