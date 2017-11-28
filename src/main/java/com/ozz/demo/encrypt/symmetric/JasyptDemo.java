@@ -4,6 +4,8 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 /**
+ * Java simplified encryption
+ * 
  * 默认算法：StandardPBEByteEncryptor.DEFAULT_ALGORITHM="PBEWithMD5AndDES"
  */
 public class JasyptDemo {
