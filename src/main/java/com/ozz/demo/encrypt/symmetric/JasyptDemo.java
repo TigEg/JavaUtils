@@ -3,6 +3,9 @@ package com.ozz.demo.encrypt.symmetric;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
+/**
+ * 默认算法：StandardPBEByteEncryptor.DEFAULT_ALGORITHM="PBEWithMD5AndDES"
+ */
 public class JasyptDemo {
   public String encrypt(String password, String message) {
     PBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
