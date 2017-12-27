@@ -14,6 +14,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.ozz.demo.security.googleauthenticator.base.TOTP;
 
 /**
  * http://www.asaph.org/2016/04/google-authenticator-2fa-java.html

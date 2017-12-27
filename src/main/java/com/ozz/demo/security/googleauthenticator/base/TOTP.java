@@ -1,4 +1,4 @@
-package com.ozz.demo.security.googleauthenticator;
+package com.ozz.demo.security.googleauthenticator.base;
 
 /**
 Copyright (c) 2011 IETF Trust and the persons identified as
