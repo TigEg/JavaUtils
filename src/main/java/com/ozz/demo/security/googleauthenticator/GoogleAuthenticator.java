@@ -20,6 +20,24 @@ import com.ozz.demo.security.googleauthenticator.base.TOTP;
  * http://www.asaph.org/2016/04/google-authenticator-2fa-java.html
  */
 public class GoogleAuthenticator {
+  public static void main(String[] args) {
+    // String randomSecretKey = getRandomSecretKey();
+    String secretKey = "s2z6 vuis vcfx k4ok ysg2 nkyc 4p7s 3cfp";
+    System.out.println("secretKey: " + secretKey);
+
+    String issuer = "google-test";
+    String account = "ouzezh";
+    String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
+    System.out.println(barCodeData + ": " + barCodeData);
+
+//    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
+//    createQRCode(barCodeData, filePath, 200, 200);
+//    System.out.println("save QRCode to " + filePath);
+
+    String code = getTOTPCode(secretKey);
+    System.out.println("TOTP code: " + code);
+  }
+
   public static String getRandomSecretKey() {
     SecureRandom random = new SecureRandom();
     byte[] bytes = new byte[20];
@@ -65,23 +83,5 @@ public class GoogleAuthenticator {
     } catch (WriterException | IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  public static void main(String[] args) {
-    // String randomSecretKey = getRandomSecretKey();
-    String secretKey = "s2z6 vuis vcfx k4ok ysg2 nkyc 4p7s 3cfp";
-    System.out.println("secretKey: " + secretKey);
-
-    String issuer = "google-test";
-    String account = "ouzezh";
-    String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
-    System.out.println(barCodeData + ": " + barCodeData);
-
-    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
-    createQRCode(barCodeData, filePath, 200, 200);
-    System.out.println("save QRCode to " + filePath);
-
-    String code = getTOTPCode(secretKey);
-    System.out.println("TOTP code: " + code);
   }
 }
