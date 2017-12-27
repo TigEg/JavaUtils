@@ -4,8 +4,14 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandler;
 import org.apache.poi.xssf.model.StylesTable;
+
 import com.ozz.demo.office.excel.ExcelUtil;
 
+/**
+ * modify from org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler
+ * 
+ * poi-ooxml 3.17
+ */
 public class SimpleXSSFSheetXMLHandler extends XSSFSheetXMLHandler {
 
   public SimpleXSSFSheetXMLHandler(StylesTable styles, ReadOnlySharedStringsTable strings,

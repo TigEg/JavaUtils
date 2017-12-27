@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.symmetric;
+package com.ozz.demo.security.encrypt.symmetric;
 
 import java.security.Key;
 import java.util.Base64;

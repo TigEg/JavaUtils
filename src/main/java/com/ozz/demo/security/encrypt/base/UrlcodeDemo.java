@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.base;
+package com.ozz.demo.security.encrypt.base;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 /**
  * URL编码
  */
-public abstract class UrlcodeDemo {
+public class UrlcodeDemo {
   public static String encode(String s) throws UnsupportedEncodingException {
     return URLEncoder.encode(s, "UTF-8");
   }

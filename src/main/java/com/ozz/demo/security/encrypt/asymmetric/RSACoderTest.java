@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.asymmetric;
+package com.ozz.demo.security.encrypt.asymmetric;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

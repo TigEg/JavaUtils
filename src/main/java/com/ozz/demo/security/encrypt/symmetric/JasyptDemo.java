@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.symmetric;
+package com.ozz.demo.security.encrypt.symmetric;
 
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;

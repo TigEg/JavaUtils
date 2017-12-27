@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.base;
+package com.ozz.demo.security.encrypt.base;
 
 import java.util.Base64;
 

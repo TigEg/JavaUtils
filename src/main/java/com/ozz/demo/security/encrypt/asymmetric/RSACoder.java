@@ -1,4 +1,4 @@
-package com.ozz.demo.encrypt.asymmetric;
+package com.ozz.demo.security.encrypt.asymmetric;
 
 import java.security.Key;
 import java.security.KeyFactory;

@@ -1,4 +1,4 @@
-package com.ozz.demo.verificationcode;
+package com.ozz.demo.security.verificationcode;
 
 import java.awt.image.BufferedImage;
 import java.util.Properties;
