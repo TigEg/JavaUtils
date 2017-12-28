@@ -21,16 +21,17 @@ import com.ozz.demo.security.googleauthenticator.base.TOTP;
  */
 public class GoogleAuthenticator {
   public static void main(String[] args) {
-    // String randomSecretKey = getRandomSecretKey();
     String secretKey = "s2z6 vuis vcfx k4ok ysg2 nkyc 4p7s 3cfp";
-    System.out.println("secretKey: " + secretKey);
-
     String issuer = "google-test";
     String account = "ouzezh";
+    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
+
+    // String randomSecretKey = getRandomSecretKey();
+    System.out.println("secretKey: " + secretKey);
+
     String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
     System.out.println(barCodeData + ": " + barCodeData);
 
-    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
     createQRCode(barCodeData, filePath, 200, 200);
     System.out.println("save QRCode to " + filePath);
 
