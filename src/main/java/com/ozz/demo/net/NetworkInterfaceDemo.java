@@ -6,8 +6,18 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectName;
+import javax.management.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -15,6 +25,7 @@ import java.util.regex.Pattern;
  * @author ozz
  */
 public class NetworkInterfaceDemo {
+  protected Logger log = LoggerFactory.getLogger(getClass());
 
   public String getHostFromUrl(String url) {
     Pattern hostPattern = Pattern.compile("^http://([^:/]+)[:/]");
@@ -59,5 +70,34 @@ public class NetworkInterfaceDemo {
       }
     }
     return null;
+  }
+
+  /**
+   * please run in tomcat
+   */
+  public void getServerHttpPort() {
+    try {
+      MBeanServer server = null;
+      if (MBeanServerFactory.findMBeanServer(null).size() > 0) {
+        server = MBeanServerFactory.findMBeanServer(null).get(0);
+      } else {
+        return;
+      }
+
+      Set<ObjectName> objectNames = server.queryNames(new ObjectName("*:type=Connector,*"),
+                                                      Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
+      Iterator<ObjectName> iterator = objectNames.iterator();
+      ObjectName objectName = null;
+      while (iterator.hasNext()) {
+        objectName = (ObjectName) iterator.next();
+
+        String protocol = server.getAttribute(objectName, "protocol").toString();
+        String scheme = server.getAttribute(objectName, "scheme").toString();
+        String port = server.getAttribute(objectName, "port").toString();
+        log.info(protocol + " : " + scheme + " : " + port);
+      }
+    } catch (Exception e) {
+      log.error(null, e);
+    }
   }
 }
