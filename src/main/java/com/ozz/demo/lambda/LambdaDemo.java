@@ -1,4 +1,4 @@
-package lambda;
+package com.ozz.demo.lambda;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
