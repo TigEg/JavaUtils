@@ -1,20 +1,12 @@
 package com.ozz.demo.security.googleauthenticator;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.ozz.demo.security.googleauthenticator.base.TOTP;
+import com.ozz.demo.zxing.QRCodeDemo;
 
 /**
  * http://www.asaph.org/2016/04/google-authenticator-2fa-java.html
@@ -24,18 +16,18 @@ public class GoogleAuthenticator {
     String secretKey = getRandomSecretKey();
     String issuer = "google-test";
     String account = "ouzezh";
-    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
 
     System.out.println("secretKey: " + secretKey);
 
     String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
     System.out.println(barCodeData + ": " + barCodeData);
 
-    createQRCode(barCodeData, filePath, 200, 200);
-    System.out.println("save QRCode to " + filePath);
-
     String code = getTOTPCode(secretKey);
     System.out.println("TOTP code: " + code);
+    
+    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
+    QRCodeDemo.createQRCode(barCodeData, filePath, 200, 200);
+    System.out.println("save QRCode to " + filePath);
   }
 
   public static String getRandomSecretKey() {
@@ -46,6 +38,7 @@ public class GoogleAuthenticator {
     String secretKey = base32.encodeToString(bytes);
     // make the secret key more human-readable by lower-casing and
     // inserting spaces between each group of 4 characters
+    System.out.println(secretKey.toLowerCase());
     return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
   }
 
@@ -74,14 +67,4 @@ public class GoogleAuthenticator {
     }
   }
 
-  public static void createQRCode(String barCodeData, String filePath, int height, int width) {
-    try {
-      BitMatrix matrix = new MultiFormatWriter().encode(barCodeData, BarcodeFormat.QR_CODE, width, height);
-      try (FileOutputStream out = new FileOutputStream(filePath)) {
-        MatrixToImageWriter.writeToStream(matrix, "png", out);
-      }
-    } catch (WriterException | IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 }
