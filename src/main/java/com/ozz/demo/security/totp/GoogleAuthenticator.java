@@ -1,11 +1,12 @@
-package com.ozz.demo.security.googleauthenticator;
+package com.ozz.demo.security.totp;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
-import com.ozz.demo.security.googleauthenticator.base.TOTP;
+
+import com.ozz.demo.security.totp.base.TOTP;
 import com.ozz.demo.zxing.QRCodeDemo;
 
 /**
@@ -38,7 +39,6 @@ public class GoogleAuthenticator {
     String secretKey = base32.encodeToString(bytes);
     // make the secret key more human-readable by lower-casing and
     // inserting spaces between each group of 4 characters
-    System.out.println(secretKey.toLowerCase());
     return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
   }
 
