@@ -21,7 +21,7 @@ public class GoogleAuthenticator {
     System.out.println("secretKey: " + secretKey);
 
     String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
-    System.out.println(barCodeData + ": " + barCodeData);
+    System.out.println("barCodeData: " + barCodeData);
 
     String code = getTOTPCode(secretKey);
     System.out.println("TOTP code: " + code);
