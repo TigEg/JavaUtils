@@ -20,12 +20,12 @@ public class GoogleAuthenticator {
 
     System.out.println("secretKey: " + secretKey);
 
+    String code = getTOTPCode(secretKey);
+    System.out.println("TOTP code: " + code);
+
     String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
     System.out.println("barCodeData: " + barCodeData);
 
-    String code = getTOTPCode(secretKey);
-    System.out.println("TOTP code: " + code);
-    
     String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
     QRCodeDemo.createQRCode(barCodeData, filePath, 200, 200);
     System.out.println("save QRCode to " + filePath);
