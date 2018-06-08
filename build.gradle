@@ -28,13 +28,13 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework:spring-beans")
-    compile("org.apache.poi:poi-ooxml")
-    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("org.springframework:spring-beans:+")
+    compile("org.apache.poi:poi-ooxml:+")
+    compile("com.fasterxml.jackson.core:jackson-databind:+")
     compile("org.apache.commons:commons-lang3")
     compile("commons-io:commons-io:+")
     compile("org.apache.ant:ant:+")//ZipUtil
-    compile("ch.qos.logback:logback-classic")
+    compile("ch.qos.logback:logback-classic:+")
     compile("org.apache.commons:commons-csv:+")
     compile("org.apache.httpcomponents:httpmime:+")
     compile("org.jasypt:jasypt:+")
