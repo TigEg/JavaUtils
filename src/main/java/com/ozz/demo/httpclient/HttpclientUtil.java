@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
@@ -16,18 +17,15 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class HttpclientUtil {
-  private static Logger log = LoggerFactory.getLogger(HttpclientUtil.class);
-
   /**
    * set proxy
    */
@@ -40,18 +38,20 @@ public class HttpclientUtil {
   /**
    * Get
    */
-  public static String doGet(String uri) throws IOException {
+  public static String doGet(String uri) {
     try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
       HttpGet httpRequest = new HttpGet(uri);
 
       return doRequest(httpclient, httpRequest);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   /**
    * Post
    */
-  public static String doPost(String url, Map<String, String> params) throws IOException {
+  public static String doPost(String url, Map<String, String> params) {
     try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
       HttpPost httpRequest = new HttpPost(url);
       List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -61,22 +61,44 @@ public class HttpclientUtil {
       httpRequest.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
 
       return doRequest(httpclient, httpRequest);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  private static String doRequest(CloseableHttpClient httpclient, HttpRequestBase httpRequest) throws IOException {
+  /**
+   * Post
+   */
+  public static String doPost(String url, String body) {
+    try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
+      HttpPost httpRequest = new HttpPost(url);
+      httpRequest.setEntity(new StringEntity(body, "UTF-8"));
+      return doRequest(httpclient, httpRequest);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static String doRequest(CloseableHttpClient httpclient, HttpRequestBase httpRequest) {
     try (CloseableHttpResponse response = httpclient.execute(httpRequest);) {
       if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
         return parseResponse(response);
       } else {
         String mess = String.valueOf(response.getStatusLine().getStatusCode());
+        Exception e1 = null;
         try {
-          mess += "\n"+parseResponse(response);
+          mess += "\n" + parseResponse(response);
         } catch (Exception e) {
-          log.error(null, e);
-        } 
-        throw new RuntimeException(mess);
+          e1 = e;
+        }
+        RuntimeException e2 = new RuntimeException(mess);
+        if (e1 != null) {
+          e2.addSuppressed(e1);
+        }
+        throw e2;
       }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     } finally {
       httpRequest.abort();
     }
@@ -92,7 +114,7 @@ public class HttpclientUtil {
   /**
    * 上传附件
    */
-  public static void upload(String url, File file) throws IOException {
+  public static void upload(String url, File file) {
     try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
       // 创建请求
       HttpPost httpRequest = new HttpPost(url);
@@ -116,6 +138,8 @@ public class HttpclientUtil {
       } finally {
         httpRequest.abort();
       }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
