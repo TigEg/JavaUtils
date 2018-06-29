@@ -42,5 +42,5 @@ dependencies {
     compile("org.apache.commons:commons-text:+")
     compile("com.google.zxing:javase:+")
     //providedCompile
-    testCompile("junit:junit:+")
+    //testCompile("junit:junit:+")
 }
