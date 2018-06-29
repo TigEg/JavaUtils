@@ -1,19 +1,23 @@
 package com.ozz.demo.security.encrypt.asymmetric;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.apache.commons.lang3.StringUtils;
 
 public class RSACoderTest {
-  private static String publicKey;
-  private static String privateKey;
+  private String publicKey;
+  private String privateKey;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
+  public static void main(String[] args) {
+    RSACoderTest test = new RSACoderTest();
+    test.setUp();
+
+    test.testEncryptByPublicKey();
+    String encodedData = test.testEncryptByPrivateKey();
+    test.testSign(encodedData);
+  }
+
+  public void setUp() {
     Map<String, Object> keyMap = RSACoder.initKey();
 
     publicKey = RSACoder.getPublicKey(keyMap);
@@ -22,9 +26,8 @@ public class RSACoderTest {
     System.out.println("私钥： " + privateKey);
   }
 
-  @Test
-  public void test() throws Exception {
-    System.out.println("\n公钥加密——私钥解密");
+  public void testEncryptByPublicKey() {
+    System.out.println("--------\n公钥加密——私钥解密");
     String inputStr = "abc";
 
     String encodedData = RSACoder.encryptByPublicKey(inputStr, publicKey);
@@ -33,13 +36,15 @@ public class RSACoderTest {
     String outputStr = RSACoder.decryptByPrivateKey(encodedData, privateKey);
 
     System.out.println("加密前: " + inputStr + "\n" + "解密后: " + outputStr);
-    assertEquals(inputStr, outputStr);
+
+    if(!StringUtils.equals(inputStr, outputStr)) {
+      throw new RuntimeException("解密数据错误");
+    }
   }
 
-  @Test
-  public void testSign() throws Exception {
-    System.out.println("\n私钥加密——公钥解密");
-    String inputStr = "sign";
+  public String testEncryptByPrivateKey() {
+    System.out.println("--------\n私钥加密——公钥解密");
+    String inputStr = "def";
 
     String encodedData = RSACoder.encryptByPrivateKey(inputStr, privateKey);
     System.out.println("密文: " + new String(encodedData));
@@ -47,9 +52,15 @@ public class RSACoderTest {
     String outputStr = RSACoder.decryptByPublicKey(encodedData, publicKey);
 
     System.out.println("加密前: " + inputStr + "\n" + "解密后: " + outputStr);
-    assertEquals(inputStr, outputStr);
 
-    System.out.println("\n私钥签名——公钥验证签名");
+    if(!StringUtils.equals(inputStr, outputStr)) {
+      throw new RuntimeException("解密数据错误");
+    }
+    return encodedData;
+  }
+
+  public void testSign(String encodedData) {
+    System.out.println("--------\n私钥签名——公钥验证签名");
     // 产生签名
     String sign = RSACoder.sign(encodedData.getBytes(), privateKey);
     System.out.println("签名:\r" + sign);
@@ -57,7 +68,10 @@ public class RSACoderTest {
     // 验证签名
     boolean status = RSACoder.verify(encodedData.getBytes(), publicKey, sign);
     System.out.println("状态:\r" + status);
-    assertTrue(status);
+
+    if(!status) {
+      throw new RuntimeException("验证签名错误");
+    }
   }
 
 }

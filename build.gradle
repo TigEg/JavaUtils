@@ -12,8 +12,8 @@ tasks.withType(JavaCompile) {
 
 sourceCompatibility = 1.8
 jar {
-    baseName='ouzezh-utils'
-    version='0.1'
+    baseName='Target'
+    version='1'
 }
 
 repositories {

@@ -3,7 +3,6 @@ package com.ozz.demo.json;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Provides some convenient method implementations. Other object can extend it to leverage these
@@ -21,7 +20,9 @@ public class ToStringDemo {
   public String toString() {
     try {
       return jsonUtil.toJson(this);
-    } catch (JsonProcessingException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }

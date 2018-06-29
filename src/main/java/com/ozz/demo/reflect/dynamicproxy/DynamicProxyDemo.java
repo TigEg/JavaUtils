@@ -4,12 +4,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.junit.Test;
-
 public class DynamicProxyDemo {
-  @Test
-  public void test() {
-    DemoInterface t = getDynamicProxy(DemoInterface.class);
+  public static void main(String[] args) {
+    DynamicProxyDemo test = new DynamicProxyDemo();
+
+    DemoInterface t = test.getDynamicProxy(DemoInterface.class);
     t.run("test dynamic proxy");
   }
 
