@@ -3,6 +3,9 @@ package com.ozz.demo.security.totp;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+
+import javax.swing.filechooser.FileSystemView;
+
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 
@@ -26,7 +29,7 @@ public class GoogleAuthenticator {
     String barCodeData = getGoogleAuthenticatorBarCode(secretKey, account, issuer);
     System.out.println("barCodeData: " + barCodeData);
 
-    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
+    String filePath = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + "/QRCode.png";
     QRCodeDemo.createQRCode(barCodeData, filePath, 200, 200);
     System.out.println("save QRCode to " + filePath);
   }
