@@ -10,9 +10,6 @@ import org.apache.commons.codec.digest.DigestUtils;
  * 数据摘要
  */
 public class DigestDemo {
-  public static void main(String[] args) {
-    System.out.println(DigestUtils.md5Hex("1002ncr9dddc8cb0023f5b4c6f25c6b572018-07-15"));
-  }
   public String digest(Path path) {
     try (InputStream input = Files.newInputStream(path)) {
       return DigestUtils.md5Hex(input);
