@@ -1,19 +1,9 @@
 package com.ozz.demo.json.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class Item {
+public class Item extends BaseObject {
   private String id;
   private String name;
-  @Override
-  public String toString() {
-    try {
-      return new ObjectMapper().writeValueAsString(this);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-  }
+
   public String getId() {
     return id;
   }

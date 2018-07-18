@@ -40,7 +40,7 @@ public class JsonDemo {
     System.out.println(page);
   }
 
-  public String toJson(Object bean) {
+  public static String toJson(Object bean) {
     try {
       return objectMapper.get().writeValueAsString(bean);
     } catch (RuntimeException e) {
