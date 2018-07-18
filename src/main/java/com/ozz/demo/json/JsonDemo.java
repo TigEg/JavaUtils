@@ -19,6 +19,15 @@ import com.ozz.demo.json.model.Page;
  *
  */
 public class JsonDemo {
+  private static ThreadLocal<ObjectMapper> objectMapper = new ThreadLocal<ObjectMapper>() {
+    @Override
+    protected ObjectMapper initialValue() {
+      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));// 日期格式
+      return objectMapper;
+    }
+  };
+
   public static void main(String[] args) {
     JsonDemo test = new JsonDemo();
 
@@ -31,15 +40,9 @@ public class JsonDemo {
     System.out.println(page);
   }
 
-  private ObjectMapper getObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));// 日期格式
-    return objectMapper;
-  }
-
   public String toJson(Object bean) {
     try {
-      return getObjectMapper().writeValueAsString(bean);
+      return objectMapper.get().writeValueAsString(bean);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
@@ -49,7 +52,7 @@ public class JsonDemo {
 
   public <T> T formJson(String json, Class<T> c) {
     try {
-      return getObjectMapper().readValue(json, c);
+      return objectMapper.get().readValue(json, c);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
@@ -62,7 +65,7 @@ public class JsonDemo {
    */
   public <T> T formJson(String json, TypeReference<T> typeReference) {
     try {
-      return getObjectMapper().readValue(json, typeReference);
+      return objectMapper.get().readValue(json, typeReference);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
