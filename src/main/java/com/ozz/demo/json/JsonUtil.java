@@ -18,7 +18,7 @@ import com.ozz.demo.json.model.Page;
  *
  *
  */
-public class JsonDemo {
+public class JsonUtil {
   private static ThreadLocal<ObjectMapper> objectMapper = new ThreadLocal<ObjectMapper>() {
     @Override
     protected ObjectMapper initialValue() {
@@ -29,7 +29,7 @@ public class JsonDemo {
   };
 
   public static void main(String[] args) {
-    JsonDemo test = new JsonDemo();
+    JsonUtil test = new JsonUtil();
 
     // 链接
     String rowsJson = "[{\"id\":\"id1\",\"name\":\"name1\"},{\"id\":\"id2\",\"name\":\"name2\"}]";
