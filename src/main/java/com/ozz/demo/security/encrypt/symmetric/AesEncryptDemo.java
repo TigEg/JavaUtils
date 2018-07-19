@@ -33,7 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @create Jul 17, 2012 6:35:36 PM
  * @author 玄玉(http://blog.csdn/net/jadyer)
  */
-public class EncryptDemo { // 密钥算法
+public class AesEncryptDemo { // 密钥算法
   private String KEY_ALGORITHM = "AES";
 
   // 加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
@@ -87,7 +87,7 @@ public class EncryptDemo { // 密钥算法
   }
 
   public static void main(String[] args) throws Exception {
-    EncryptDemo demo = new EncryptDemo();
+    AesEncryptDemo demo = new AesEncryptDemo();
 
     String source = "站在云端，敲下键盘，望着通往世界另一头的那扇窗，只为做那读懂0和1的人。。";
     System.out.println("原文：" + source);
