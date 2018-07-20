@@ -3,46 +3,62 @@ package com.ozz.demo.httpclient;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 public class HttpclientUtil {
-  /**
-   * set proxy
-   */
+
+  public static void main(String[] args) throws IOException {
+    // HttpclientDemo.upload("http://jwapi.dev.staff.xdf.cn:8080/import_excel?accessToken=5e83a0b0-d9a8-44c2-b2de-1158b8866ccc&appId=90101&businessType=2",
+    // new File("C:/Users/ouzezhou/Desktop/Temp/20161223/班级模板 (7).xlsx"));
+
+    System.out.println(HttpclientUtil.doPost("http://www.baidu.com",
+                                             Collections.singletonList(new BasicNameValuePair("key", "value")),
+                                             Collections.singletonList(new BasicHeader("Content-Type", "text/plain")),
+                                             Collections.singletonList(new BasicClientCookie("token", "xx"))));
+
+  }
+
   public static void setProxy(HttpRequestBase httpRequest) {
     HttpHost proxy = new HttpHost("127.0.0.1", 8888, "http");
     RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
     httpRequest.setConfig(config);
   }
 
-  /**
-   * Get
-   */
-  public static String doGet(String uri) {
-    try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
-      HttpGet httpRequest = new HttpGet(uri);
+  public static String doGet(String url) {
+    return doGet(url, null, null);
+  }
 
-      return doRequest(httpclient, httpRequest);
+  public static String doGet(String url, List<Header> headers, List<Cookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
+      HttpGet httpRequest = new HttpGet(url);
+
+      return doRequest(httpclient, httpRequest, headers);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
@@ -50,19 +66,16 @@ public class HttpclientUtil {
     }
   }
 
-  /**
-   * Post
-   */
-  public static String doPost(String url, Map<String, String> params) {
-    try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
+  public static String doPost(String url, List<NameValuePair> params) {
+    return doPost(url, params, null, null);
+  }
+
+  public static String doPost(String url, List<NameValuePair> params, List<Header> headers, List<Cookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
       HttpPost httpRequest = new HttpPost(url);
-      List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-      for (String name : params.keySet()) {
-        nvps.add(new BasicNameValuePair(name, params.get(name)));
-      }
-      httpRequest.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+      httpRequest.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-      return doRequest(httpclient, httpRequest);
+      return doRequest(httpclient, httpRequest, headers);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
@@ -70,14 +83,16 @@ public class HttpclientUtil {
     }
   }
 
-  /**
-   * Post
-   */
   public static String doPost(String url, String body) {
-    try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
+    return doPost(url, body, null, null);
+  }
+
+  public static String doPost(String url, String body, List<Header> headers, List<Cookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new StringEntity(body, "UTF-8"));
-      return doRequest(httpclient, httpRequest);
+
+      return doRequest(httpclient, httpRequest, headers);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
@@ -85,7 +100,27 @@ public class HttpclientUtil {
     }
   }
 
-  private static String doRequest(CloseableHttpClient httpclient, HttpRequestBase httpRequest) {
+  private static CloseableHttpClient createHttpClient(List<Cookie> cookies) {
+    HttpClientBuilder builder = HttpClients.custom();
+
+    if (cookies != null && !cookies.isEmpty()) {
+      CookieStore cookieStore = new BasicCookieStore();
+      for (Cookie cookie : cookies) {
+        cookieStore.addCookie(cookie);
+      }
+      builder.setDefaultCookieStore(cookieStore);
+    }
+
+    return builder.build();
+  }
+
+  private static String doRequest(CloseableHttpClient httpclient, HttpRequestBase httpRequest, List<Header> headers) {
+    if (headers != null && !headers.isEmpty()) {
+      for (Header header : headers) {
+        httpRequest.addHeader(header);
+      }
+    }
+
     try (CloseableHttpResponse response = httpclient.execute(httpRequest);) {
       if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
         return parseResponse(response);
@@ -136,12 +171,11 @@ public class HttpclientUtil {
       httpRequest.setEntity(multipartEntityBuilder.build());
 
       // 发送
-      try(CloseableHttpResponse response = httpclient.execute(httpRequest);) {
+      try (CloseableHttpResponse response = httpclient.execute(httpRequest);) {
         // 解析响应值
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
         } else {
-          throw new RuntimeException(response.getStatusLine().getStatusCode() + ":"
-                                     + response.getStatusLine().getReasonPhrase());
+          throw new RuntimeException(response.getStatusLine().getStatusCode() + ":" + response.getStatusLine().getReasonPhrase());
         }
       } finally {
         httpRequest.abort();
@@ -151,11 +185,5 @@ public class HttpclientUtil {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-  }
-
-  public static void main(String[] args) throws IOException {
-//      HttpclientDemo.upload("http://jwapi.dev.staff.xdf.cn:8080/import_excel?accessToken=5e83a0b0-d9a8-44c2-b2de-1158b8866ccc&appId=90101&businessType=2",
-//                                  new File("C:/Users/ouzezhou/Desktop/Temp/20161223/班级模板 (7).xlsx"));
-    System.out.println(HttpclientUtil.doGet("http://www.baidu.com"));
   }
 }
