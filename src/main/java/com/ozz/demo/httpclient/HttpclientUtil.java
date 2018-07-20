@@ -18,7 +18,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -28,7 +27,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 public class HttpclientUtil {
@@ -37,15 +35,14 @@ public class HttpclientUtil {
     // HttpclientDemo.upload("http://jwapi.dev.staff.xdf.cn:8080/import_excel?accessToken=5e83a0b0-d9a8-44c2-b2de-1158b8866ccc&appId=90101&businessType=2",
     // new File("C:/Users/ouzezhou/Desktop/Temp/20161223/班级模板 (7).xlsx"));
 
-    System.out.println(HttpclientUtil.doPost("http://www.baidu.com",
-                                             Collections.singletonList(new BasicNameValuePair("key", "value")),
-                                             Collections.singletonList(new BasicHeader("Content-Type", "text/plain")),
-                                             Collections.singletonList(new BasicClientCookie("token", "xx"))));
+    System.out.println(HttpclientUtil.doGet("http://www.baidu.com",
+                                            Collections.singletonList(new BasicHeader("testheader", "text/plain")),
+                                            Collections.singletonList(new BasicClientCookie("testcookie", "xx"))));
 
   }
 
-  public static void setProxy(HttpRequestBase httpRequest) {
-    HttpHost proxy = new HttpHost("127.0.0.1", 8888, "http");
+  public static void setProxy(HttpRequestBase httpRequest, String host, int port) {
+    HttpHost proxy = new HttpHost(host, port, httpRequest.getURI().toString().replaceAll(":.*", ""));
     RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
     httpRequest.setConfig(config);
   }
@@ -54,10 +51,11 @@ public class HttpclientUtil {
     return doGet(url, null, null);
   }
 
-  public static String doGet(String url, List<Header> headers, List<Cookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
+  public static String doGet(String url, List<Header> headers, List<BasicClientCookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
       HttpGet httpRequest = new HttpGet(url);
 
+      setProxy(httpRequest, "127.0.0.1", 8888);// XXX
       return doRequest(httpclient, httpRequest, headers);
     } catch (RuntimeException e) {
       throw e;
@@ -70,8 +68,8 @@ public class HttpclientUtil {
     return doPost(url, params, null, null);
   }
 
-  public static String doPost(String url, List<NameValuePair> params, List<Header> headers, List<Cookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
+  public static String doPost(String url, List<NameValuePair> params, List<Header> headers, List<BasicClientCookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
@@ -87,8 +85,8 @@ public class HttpclientUtil {
     return doPost(url, body, null, null);
   }
 
-  public static String doPost(String url, String body, List<Header> headers, List<Cookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies)) {
+  public static String doPost(String url, String body, List<Header> headers, List<BasicClientCookie> cookies) {
+    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new StringEntity(body, "UTF-8"));
 
@@ -100,12 +98,18 @@ public class HttpclientUtil {
     }
   }
 
-  private static CloseableHttpClient createHttpClient(List<Cookie> cookies) {
+  private static CloseableHttpClient createHttpClient(List<BasicClientCookie> cookies, String url) {
     HttpClientBuilder builder = HttpClients.custom();
 
     if (cookies != null && !cookies.isEmpty()) {
+      String domain = url.replaceFirst("^http://([^/]+).*", "$1");
       CookieStore cookieStore = new BasicCookieStore();
-      for (Cookie cookie : cookies) {
+      for (BasicClientCookie cookie : cookies) {
+        // set domain
+        if (cookie.getDomain() == null) {
+          cookie.setDomain(domain);
+        }
+        // add cookie
         cookieStore.addCookie(cookie);
       }
       builder.setDefaultCookieStore(cookieStore);
