@@ -43,7 +43,9 @@ public class HttpclientUtil {
       HttpGet httpRequest = new HttpGet(uri);
 
       return doRequest(httpclient, httpRequest);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -61,7 +63,9 @@ public class HttpclientUtil {
       httpRequest.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
 
       return doRequest(httpclient, httpRequest);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -74,7 +78,9 @@ public class HttpclientUtil {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new StringEntity(body, "UTF-8"));
       return doRequest(httpclient, httpRequest);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -97,7 +103,9 @@ public class HttpclientUtil {
         }
         throw e2;
       }
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     } finally {
       httpRequest.abort();
@@ -138,7 +146,9 @@ public class HttpclientUtil {
       } finally {
         httpRequest.abort();
       }
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
