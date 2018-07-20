@@ -11,7 +11,7 @@ import com.ozz.demo.json.JsonUtil;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class BaseObject {
+public abstract class BaseObject {
   /**
    * A JSON representation of the object.
    */
