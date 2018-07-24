@@ -3,6 +3,8 @@ package com.ozz.demo.zxing;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.swing.filechooser.FileSystemView;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -12,7 +14,7 @@ import com.google.zxing.common.BitMatrix;
 public class QRCodeDemo {
   public static void main(String[] args) {
     String contents = "https://www.baidu.com";
-    String filePath = "C:/Users/ouzezhou/Desktop/QRCode.png";
+    String filePath = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + "/QRCode.png";
 
     createQRCode(contents, filePath, 200, 200);
     System.out.println("save QRCode to " + filePath);
