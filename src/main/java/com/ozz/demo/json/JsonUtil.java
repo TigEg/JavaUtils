@@ -2,6 +2,7 @@ package com.ozz.demo.json;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ozz.demo.json.model.Item;
@@ -29,14 +30,12 @@ public class JsonUtil {
   };
 
   public static void main(String[] args) {
-    JsonUtil test = new JsonUtil();
-
     // 链接
     String rowsJson = "[{\"id\":\"id1\",\"name\":\"name1\"},{\"id\":\"id2\",\"name\":\"name2\"}]";
-    List<Item> rows = test.formJson(rowsJson, new TypeReference<List<Item>>() {});
+    List<Item> rows = formJson(rowsJson, new TypeReference<List<Item>>() {});
     System.out.println(rows);
     // 复杂对象
-    Page<Item> page = test.formJson("{\"rows\":" + rowsJson + "}", new TypeReference<Page<Item>>() {});
+    Page<Item> page = formJson("{\"rows\":" + rowsJson + "}", new TypeReference<Page<Item>>() {});
     System.out.println(page);
   }
 
@@ -50,7 +49,7 @@ public class JsonUtil {
     }
   }
 
-  public <T> T formJson(String json, Class<T> c) {
+  public static <T> T formJson(String json, Class<T> c) {
     try {
       return objectMapper.get().readValue(json, c);
     } catch (RuntimeException e) {
@@ -63,7 +62,7 @@ public class JsonUtil {
   /**
    * 解析复杂格式
    */
-  public <T> T formJson(String json, TypeReference<T> typeReference) {
+  public static <T> T formJson(String json, TypeReference<T> typeReference) {
     try {
       return objectMapper.get().readValue(json, typeReference);
     } catch (RuntimeException e) {
