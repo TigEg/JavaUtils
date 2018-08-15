@@ -32,10 +32,10 @@ public class JsonUtil {
   public static void main(String[] args) {
     // 链接
     String rowsJson = "[{\"id\":\"id1\",\"name\":\"name1\"},{\"id\":\"id2\",\"name\":\"name2\"}]";
-    List<Item> rows = formJson(rowsJson, new TypeReference<List<Item>>() {});
+    List<Item> rows = fromJson(rowsJson, new TypeReference<List<Item>>() {});
     System.out.println(rows);
     // 复杂对象
-    Page<Item> page = formJson("{\"rows\":" + rowsJson + "}", new TypeReference<Page<Item>>() {});
+    Page<Item> page = fromJson("{\"rows\":" + rowsJson + "}", new TypeReference<Page<Item>>() {});
     System.out.println(page);
   }
 
@@ -49,7 +49,7 @@ public class JsonUtil {
     }
   }
 
-  public static <T> T formJson(String json, Class<T> c) {
+  public static <T> T fromJson(String json, Class<T> c) {
     try {
       return objectMapper.get().readValue(json, c);
     } catch (RuntimeException e) {
@@ -62,7 +62,7 @@ public class JsonUtil {
   /**
    * 解析复杂格式
    */
-  public static <T> T formJson(String json, TypeReference<T> typeReference) {
+  public static <T> T fromJson(String json, TypeReference<T> typeReference) {
     try {
       return objectMapper.get().readValue(json, typeReference);
     } catch (RuntimeException e) {
