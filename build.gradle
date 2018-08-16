@@ -41,6 +41,7 @@ dependencies {
     compile("com.github.penggle:kaptcha:+")
     compile("org.apache.commons:commons-text:+")
     compile("com.google.zxing:javase:+")
+    compile("redis.clients:jedis:+")
     //providedCompile
     //testCompile("junit:junit:+")
 }
