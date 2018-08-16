@@ -28,7 +28,7 @@ public class RedisClusterUtil {
     }
 
     int timeout = Integer.valueOf(props.getProperty("redis.timeout"));
-    int maxAttempts = Integer.valueOf(props.getProperty("cluster.max.attempts"));
+    int maxAttempts = Integer.valueOf(props.getProperty("redis.maxAttempts"));
 
     Set<HostAndPort> nodeSet = new HashSet<>();
     for (int i = 1;; i++) {
