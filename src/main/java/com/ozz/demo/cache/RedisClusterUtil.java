@@ -44,8 +44,12 @@ public class RedisClusterUtil {
     jedisCluster = new JedisCluster(nodeSet, timeout, maxAttempts);
   }
 
-  public static boolean exist(String key) {
+  public static boolean exists(String key) {
     return jedisCluster.exists(key);
+  }
+
+  public static void expire(String key, int seconds) {
+    jedisCluster.expire(key, seconds);
   }
 
   public static String get(String key) {
@@ -56,11 +60,15 @@ public class RedisClusterUtil {
     jedisCluster.set(key, value);
   }
 
-  public static void delete(String key) {
+  public static void setex(String key, int seconds, String value) {
+    jedisCluster.setex(key, seconds, value);
+  }
+
+  public static void del(String key) {
     jedisCluster.del(key);
   }
 
-  public static void deleteByPattern(String pattern) {
+  public static void delByPattern(String pattern) {
     TreeSet<String> keys = keys(pattern);
     for (String key : keys) {
       jedisCluster.del(key);
@@ -96,7 +104,7 @@ public class RedisClusterUtil {
     return jedisCluster.hgetAll(key);
   }
 
-  public static void hmset(String key, String field, String value) {
+  public static void hset(String key, String field, String value) {
     jedisCluster.hset(key, field, value);
   }
 
