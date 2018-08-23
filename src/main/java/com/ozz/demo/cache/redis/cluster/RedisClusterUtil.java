@@ -1,4 +1,4 @@
-package com.ozz.demo.cache;
+package com.ozz.demo.cache.redis.cluster;
 
 import java.io.InputStream;
 import java.util.HashSet;
@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.apache.commons.lang3.StringUtils;
+
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
@@ -69,7 +71,7 @@ public class RedisClusterUtil {
   }
 
   public static void delByPattern(String pattern) {
-    TreeSet<String> keys = keys(pattern);
+    Set<String> keys = keys(pattern);
     for (String key : keys) {
       jedisCluster.del(key);
     }
@@ -84,7 +86,7 @@ public class RedisClusterUtil {
    * 
    * h[ae]llo will match hello and hallo, but not hillo
    */
-  public static TreeSet<String> keys(String pattern) {
+  public static Set<String> keys(String pattern) {
     TreeSet<String> keys = new TreeSet<>();
     Map<String, JedisPool> clusterNodes = jedisCluster.getClusterNodes();
     for (String k : clusterNodes.keySet()) {
