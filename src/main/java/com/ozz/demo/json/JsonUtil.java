@@ -25,6 +25,7 @@ public class JsonUtil {
     protected ObjectMapper initialValue() {
       ObjectMapper objectMapper = new ObjectMapper();
       objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));// 日期格式
+//      objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);// []解析成数组而不是List
       return objectMapper;
     }
   };
