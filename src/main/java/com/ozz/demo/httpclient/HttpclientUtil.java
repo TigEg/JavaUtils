@@ -52,7 +52,7 @@ public class HttpclientUtil {
   }
 
   public static String doGet(String url, List<Header> headers, List<BasicClientCookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
+    try (CloseableHttpClient httpclient = createHttpClient(url, cookies)) {
       HttpGet httpRequest = new HttpGet(url);
 
       return doRequest(httpclient, httpRequest, headers);
@@ -68,7 +68,7 @@ public class HttpclientUtil {
   }
 
   public static String doPost(String url, List<NameValuePair> params, List<Header> headers, List<BasicClientCookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
+    try (CloseableHttpClient httpclient = createHttpClient(url, cookies)) {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
@@ -85,7 +85,7 @@ public class HttpclientUtil {
   }
 
   public static String doPost(String url, String body, List<Header> headers, List<BasicClientCookie> cookies) {
-    try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
+    try (CloseableHttpClient httpclient = createHttpClient(url, cookies)) {
       HttpPost httpRequest = new HttpPost(url);
       httpRequest.setEntity(new StringEntity(body, "UTF-8"));
 
@@ -97,7 +97,7 @@ public class HttpclientUtil {
     }
   }
 
-  private static CloseableHttpClient createHttpClient(List<BasicClientCookie> cookies, String url) {
+  private static CloseableHttpClient createHttpClient(String url, List<BasicClientCookie> cookies) {
     HttpClientBuilder builder = HttpClients.custom();
 
     if (cookies != null && !cookies.isEmpty()) {
