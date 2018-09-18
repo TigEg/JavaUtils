@@ -55,7 +55,6 @@ public class HttpclientUtil {
     try (CloseableHttpClient httpclient = createHttpClient(cookies, url)) {
       HttpGet httpRequest = new HttpGet(url);
 
-      setProxy(httpRequest, "127.0.0.1", 8888);// XXX
       return doRequest(httpclient, httpRequest, headers);
     } catch (RuntimeException e) {
       throw e;
