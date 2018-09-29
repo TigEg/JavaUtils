@@ -31,7 +31,7 @@ dependencies {
     compile("org.springframework:spring-beans:+")
     compile("org.apache.poi:poi-ooxml:+")
     compile("com.fasterxml.jackson.core:jackson-databind:+")
-    compile("org.apache.commons:commons-lang3")
+    compile("org.apache.commons:commons-lang3:+")
     compile("commons-io:commons-io:+")
     compile("org.apache.ant:ant:+")//ZipUtil
     compile("ch.qos.logback:logback-classic:+")
