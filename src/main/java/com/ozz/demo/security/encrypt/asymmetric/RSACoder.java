@@ -7,15 +7,13 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.crypto.Cipher;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * 非对称加密算法
@@ -23,9 +21,6 @@ import javax.crypto.Cipher;
 public abstract class RSACoder {
   public static final String KEY_ALGORITHM = "RSA";
   public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
-
-  private static final String PUBLIC_KEY = "RSAPublicKey";
-  private static final String PRIVATE_KEY = "RSAPrivateKey";
 
   /**
    * 用私钥对信息生成数字签名
@@ -99,8 +94,7 @@ public abstract class RSACoder {
   }
 
   /**
-   * 解密
-   * 用私钥解密
+   * 解密 用私钥解密
    * 
    */
   public static String decryptByPrivateKey(String data, String key) {
@@ -123,8 +117,7 @@ public abstract class RSACoder {
   }
 
   /**
-   * 解密
-   * 用公钥解密
+   * 解密 用公钥解密
    * 
    */
   public static String decryptByPublicKey(String data, String key) {
@@ -150,14 +143,13 @@ public abstract class RSACoder {
   }
 
   /**
-   * 加密
-   * 用公钥加密
+   * 加密 用公钥加密
    * 
    */
   public static String encryptByPublicKey(String data, String key) {
     try {
       byte[] keyBytes = Base64.getDecoder().decode(key);
-      
+
 
       // 取得公钥
       X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
@@ -177,8 +169,7 @@ public abstract class RSACoder {
   }
 
   /**
-   * 加密
-   * 用私钥加密
+   * 加密 用私钥加密
    * 
    */
   public static String encryptByPrivateKey(String data, String key) {
@@ -204,52 +195,26 @@ public abstract class RSACoder {
   }
 
   /**
-   * 取得私钥
-   * 
-   */
-  public static String getPrivateKey(Map<String, Object> keyMap) {
-    Key key = (Key) keyMap.get(PRIVATE_KEY);
-
-    return Base64.getEncoder().encodeToString(key.getEncoded());
-  }
-
-  /**
-   * 取得公钥
-   * 
-   */
-  public static String getPublicKey(Map<String, Object> keyMap) {
-    Key key = (Key) keyMap.get(PUBLIC_KEY);
-
-    return Base64.getEncoder().encodeToString(key.getEncoded());
-  }
-
-  /**
    * 初始化密钥
    * 
+   * @return <publicKey, privateKey>
    */
-  public static Map<String, Object> initKey() {
+  public static Pair<String, String> initKey() {
     try {
       KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
       keyPairGen.initialize(1024);
-  
+
       KeyPair keyPair = keyPairGen.generateKeyPair();
-  
-      // 公钥
-      RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-  
-      // 私钥
-      RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-  
-      Map<String, Object> keyMap = new HashMap<String, Object>(2);
-  
-      keyMap.put(PUBLIC_KEY, publicKey);
-      keyMap.put(PRIVATE_KEY, privateKey);
-      return keyMap;
+
+      return Pair.of(keyToString(keyPair.getPublic()), keyToString(keyPair.getPrivate()));
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
-  
+
+  private static String keyToString(Key key) {
+    return Base64.getEncoder().encodeToString(key.getEncoded());
+  }
 }
