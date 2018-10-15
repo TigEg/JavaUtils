@@ -1,6 +1,6 @@
 package com.ozz.demo.security.encrypt.symmetric;
 
-import java.security.Key;
+import java.security.Security;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -37,7 +37,7 @@ public class AesEncryptDemo { // 密钥算法
   private String KEY_ALGORITHM = "AES";
 
   // 加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
-  private String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
+  private String CIPHER_ALGORITHM = "AES/ECB/PKCS7Padding";
 
   /**
    * 生成密钥
@@ -52,8 +52,21 @@ public class AesEncryptDemo { // 密钥算法
   /**
    * 转换密钥
    */
-  private Key toKey(byte[] key) throws Exception {
-    return new SecretKeySpec(key, KEY_ALGORITHM);
+  private Cipher initCipher(int encryptMode, String key) throws Exception {
+    SecretKeySpec keySpec = new SecretKeySpec(Base64.getDecoder().decode(key), KEY_ALGORITHM);
+
+    // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
+    Cipher cipher;
+    if (CIPHER_ALGORITHM.contains("PKCS7Padding")) {
+      Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+      cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
+    } else {
+      cipher = Cipher.getInstance(CIPHER_ALGORITHM); // 实例化Cipher对象，它用于完成实际的加密操作
+    }
+
+    cipher.init(encryptMode, keySpec); // 初始化Cipher对象，设置为加密模式
+
+    return cipher;
   }
 
   /**
@@ -64,12 +77,20 @@ public class AesEncryptDemo { // 密钥算法
    * @return 加密后的数据
    */
   public String encrypt(String key, String data) throws Exception {
-    Key k = toKey(Base64.getDecoder().decode(key)); // 还原密钥
-    // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
-    // Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
-    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM); // 实例化Cipher对象，它用于完成实际的加密操作
-    cipher.init(Cipher.ENCRYPT_MODE, k); // 初始化Cipher对象，设置为加密模式
-    return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes())); // 执行加密操作。加密后的结果通常都会用Base64编码进行传输
+    Cipher cipher = initCipher(Cipher.ENCRYPT_MODE, key);
+
+    byte[] dataBytes = data.getBytes();
+    if(CIPHER_ALGORITHM.contains("NoPadding")) {
+      int plaintextLength = dataBytes.length;
+      if (plaintextLength % cipher.getBlockSize() != 0) {
+          plaintextLength = plaintextLength + (cipher.getBlockSize() - (plaintextLength % cipher.getBlockSize()));
+      }
+      byte[] plaintext = new byte[plaintextLength];
+      System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
+      dataBytes = plaintext;
+    }
+
+    return Base64.getEncoder().encodeToString(cipher.doFinal(dataBytes)); // 执行加密操作。加密后的结果通常都会用Base64编码进行传输
   }
 
   /**
@@ -80,9 +101,7 @@ public class AesEncryptDemo { // 密钥算法
    * @return 解密后的数据
    */
   public String decrypt(String key, String data) throws Exception {
-    Key k = toKey(Base64.getDecoder().decode(key));
-    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-    cipher.init(Cipher.DECRYPT_MODE, k); // 初始化Cipher对象，设置为解密模式
+    Cipher cipher = initCipher(Cipher.DECRYPT_MODE, key);
     return new String(cipher.doFinal(Base64.getDecoder().decode(data))); // 执行解密操作
   }
 
