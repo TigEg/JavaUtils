@@ -79,8 +79,9 @@ public class AesEncryptDemo { // 密钥算法
   public String encrypt(String key, String data) throws Exception {
     Cipher cipher = initCipher(Cipher.ENCRYPT_MODE, key);
 
-    byte[] dataBytes = data.getBytes();
+    byte[] dataBytes;
     if(CIPHER_ALGORITHM.contains("NoPadding")) {
+      dataBytes = data.trim().getBytes();
       int plaintextLength = dataBytes.length;
       if (plaintextLength % cipher.getBlockSize() != 0) {
           plaintextLength = plaintextLength + (cipher.getBlockSize() - (plaintextLength % cipher.getBlockSize()));
@@ -88,6 +89,8 @@ public class AesEncryptDemo { // 密钥算法
       byte[] plaintext = new byte[plaintextLength];
       System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
       dataBytes = plaintext;
+    } else {
+      dataBytes = data.getBytes();
     }
 
     return Base64.getEncoder().encodeToString(cipher.doFinal(dataBytes)); // 执行加密操作。加密后的结果通常都会用Base64编码进行传输
@@ -102,7 +105,12 @@ public class AesEncryptDemo { // 密钥算法
    */
   public String decrypt(String key, String data) throws Exception {
     Cipher cipher = initCipher(Cipher.DECRYPT_MODE, key);
-    return new String(cipher.doFinal(Base64.getDecoder().decode(data))); // 执行解密操作
+    String str = new String(cipher.doFinal(Base64.getDecoder().decode(data))); // 执行解密操作
+
+    if(CIPHER_ALGORITHM.contains("NoPadding")) {
+      str = str.trim();
+    }
+    return str;
   }
 
   public static void main(String[] args) throws Exception {
