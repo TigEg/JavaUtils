@@ -43,7 +43,7 @@ dependencies {
     compile("com.google.zxing:javase:+")
     compile("redis.clients:jedis:+")
     compile("org.mongodb:mongodb-driver:+")
-    compile("org.bouncycastle:bcprov-jdk16:+")//aes支持
+    compile("org.bouncycastle:bcprov-jdk16:+")//aes支持PKCS7Padding
     //providedCompile
     //testCompile("junit:junit:+")
 }
