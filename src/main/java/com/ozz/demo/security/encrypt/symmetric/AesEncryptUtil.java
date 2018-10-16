@@ -8,6 +8,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 /**
  * AES对称加密算法
  * 
@@ -33,7 +35,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @create Jul 17, 2012 6:35:36 PM
  * @author 玄玉(http://blog.csdn/net/jadyer)
  */
-public class AesEncryptDemo { // 密钥算法
+public class AesEncryptUtil { // 密钥算法
   private String KEY_ALGORITHM = "AES";
 
   // 加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
@@ -53,16 +55,13 @@ public class AesEncryptDemo { // 密钥算法
    * 转换密钥
    */
   private Cipher initCipher(int encryptMode, String key) throws Exception {
-    SecretKeySpec keySpec = new SecretKeySpec(Base64.getDecoder().decode(key), KEY_ALGORITHM);
-
     // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
-    Cipher cipher;
     if (CIPHER_ALGORITHM.contains("PKCS7Padding")) {
-      Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-      cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
-    } else {
-      cipher = Cipher.getInstance(CIPHER_ALGORITHM); // 实例化Cipher对象，它用于完成实际的加密操作
+      Security.addProvider(new BouncyCastleProvider());
     }
+
+    SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), KEY_ALGORITHM);
+    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 
     cipher.init(encryptMode, keySpec); // 初始化Cipher对象，设置为加密模式
 
@@ -94,7 +93,7 @@ public class AesEncryptDemo { // 密钥算法
   }
 
   public static void main(String[] args) throws Exception {
-    AesEncryptDemo demo = new AesEncryptDemo();
+    AesEncryptUtil demo = new AesEncryptUtil();
 
     String source = "站在云端，敲下键盘，望着通往世界另一头的那扇窗，只为做那读懂0和1的人。。";
     System.out.println("原文：" + source);
