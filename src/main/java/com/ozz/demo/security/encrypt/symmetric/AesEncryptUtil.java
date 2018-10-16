@@ -51,9 +51,6 @@ public class AesEncryptUtil { // 密钥算法
     return Base64.getEncoder().encodeToString(secretKey.getEncoded()); // 获取二进制密钥编码形式
   }
 
-  /**
-   * 转换密钥
-   */
   private Cipher initCipher(int encryptMode, String key) throws Exception {
     // 使用PKCS7Padding填充方式,这里就得这么写了(即调用BouncyCastle组件实现)
     if (CIPHER_ALGORITHM.contains("PKCS7Padding")) {
